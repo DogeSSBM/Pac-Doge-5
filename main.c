@@ -1,5 +1,10 @@
 #include "Includes.h"
 
+Coord tileScreenMid(const Coord tile, const uint scale)
+{
+	return coordAdd(coordMul(tile, scale), scale/2);
+}
+
 bool checkDir(const Map map, const Coord coord, const Direction dir)
 {
 	const RangePair bound={(Range){0, map.len.x},(Range){0, map.len.y}};
@@ -9,24 +14,43 @@ bool checkDir(const Map map, const Coord coord, const Direction dir)
 	return map.text[adj.x][adj.y] == map.text[coord.x][coord.y];
 }
 
-void drawMap(const Map map)
+void drawWall(const Map map, const Coord coord)
 {
 	setColor(BLUE);
+	const Coord mid = tileScreenMid(coord, map.scale);
+	for(Direction dir = DIR_U; dir <= DIR_L; dir++){
+		if(checkDir(map, (Coord){coord.x,coord.y}, dir)){
+			drawLineCoords(
+				mid,
+				coordShift(mid,dir,map.scale/2)
+			);
+		}
+	}
+}
+
+void drawDot(const Map map, const Coord coord, const bool big)
+{
+	setColor(YELLOW);
+	fillCircleCoord(
+		tileScreenMid(coord, map.scale),
+		big ? map.scale/3 : map.scale/6
+	);
+}
+
+void drawMap(const Map map)
+{
 	for(uint y = 0; y < map.len.y; y++){
 		for(uint x = 0; x < map.len.x; x++){
-			if(map.text[x][y]!='#')
-				continue;
-			const Coord mid = {
-				x*map.scale+map.scale/2,
-				y*map.scale+map.scale/2
-			};
-			for(Direction dir = DIR_U; dir <= DIR_L; dir++){
-				if(checkDir(map, (Coord){x,y}, dir)){
-					drawLineCoords(
-						mid,
-						coordShift(mid,dir,map.scale/2)
-					);
-				}
+			switch(map.text[x][y]){
+				case '#':
+					drawWall(map, (Coord){x,y});
+					break;
+				case '.':
+					drawDot(map, (Coord){x,y}, false);
+					break;
+				case 'o':
+					drawDot(map, (Coord){x,y}, true);
+					break;
 			}
 		}
 	}

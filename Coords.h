@@ -133,9 +133,9 @@ Coord coordInv(const Coord coord)
 }
 
 static inline
-Coord coordAdd(const Coord coord1, const Coord coord2)
+Coord coordAdd(const Coord coord1, const uint num)
 {
-	return (Coord){coord1.x+coord2.x,coord1.y+coord2.y};
+	return (Coord){coord1.x+num,coord1.y+num};
 }
 
 static inline
