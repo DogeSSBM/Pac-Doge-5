@@ -100,6 +100,7 @@ c1	Types.h	/^		int c1;$/;"	m	struct:__anon2::__anon3
 c2	Types.h	/^		Coord c2;$/;"	m	struct:__anon7::__anon8
 c2	Types.h	/^		int c2;$/;"	m	struct:__anon2::__anon3
 charToInt	GetInt.h	/^int charToInt(const char c)$/;"	f
+checkDir	main.c	/^bool checkDir(const Map map, const Coord coord, const Direction dir)$/;"	f
 clamp	Coords.h	/^int clamp(const int n, const int min, const int max)$/;"	f
 clear	Graphics.h	/^void clear(void)$/;"	f
 clearTerminal	DogeUtil.h	/^void clearTerminal(void)$/;"	f
@@ -147,6 +148,7 @@ drawImg	Image.h	/^void drawImg(Img *image)$/;"	f
 drawLine	Graphics.h	/^void drawLine(const uint x1, const uint y1, const uint x2, const uint y2)$/;"	f
 drawLineCoord3	3D.h	/^void drawLineCoord3(const Coord3 pos1, const Coord3 pos2, const Range win, const Offset zscale)$/;"	f
 drawLineCoords	Graphics.h	/^void drawLineCoords(const Coord pos1, const Coord pos2)$/;"	f
+drawMap	main.c	/^void drawMap(const Map map)$/;"	f
 drawPixel	Graphics.h	/^void drawPixel(const uint x, const uint y)$/;"	f
 drawPixelCoord	Graphics.h	/^void drawPixelCoord(const Coord pos)$/;"	f
 drawPoly	Graphics.h	/^void drawPoly(Coord *pos, const uint num)$/;"	f
@@ -243,6 +245,7 @@ renderer	Graphics.h	/^	SDL_Renderer* renderer;$/;"	m	struct:__anon18
 rgbToColor	Colors.h	/^Color rgbToColor(const uint R, const uint G, const uint B)$/;"	f
 rgbaToColor	Colors.h	/^Color rgbaToColor(const uint R, const uint G, const uint B, const uint A)$/;"	f
 saveScreenshot	Graphics.h	/^void saveScreenshot(const char* file_name)$/;"	f
+scale	Map.h	/^	uint scale;$/;"	m	struct:__anon17
 setBlend	Graphics.h	/^void setBlend(const BlendMode mode)$/;"	f
 setColor	Graphics.h	/^void setColor(const Color c)$/;"	f
 setFontColor	Text.h	/^void setFontColor(Color c)$/;"	f

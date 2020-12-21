@@ -2,6 +2,7 @@
 
 typedef struct{
 	Length len;
+	uint scale;
 	char **text;
 }Map;
 
@@ -112,6 +113,7 @@ Map readMap(const char *mapName)
 	File *mapFile = fopen(mapPath, "r");
 	Map map = {
 		.len = getMapLen(mapFile),
+		.scale = 32,
 		.text = parseMap(mapFile, map.len)
 	};
 	return map;
