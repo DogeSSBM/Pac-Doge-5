@@ -2,6 +2,8 @@
 
 int main(int argc, char const *argv[])
 {
+	Map map = readMap("Original");
+	printMap(map);
 	const Length window = {800, 600};
 	init(window);
 	setFontSize(48);
@@ -12,6 +14,7 @@ int main(int argc, char const *argv[])
 		SDL_SCANCODE_S,
 		SDL_SCANCODE_A
 	};
+
 
 	while(1){
 		Ticks frameStart = getTicks();

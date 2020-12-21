@@ -10,6 +10,7 @@
 #include <complex.h>
 #include <math.h>
 #include <tgmath.h>
+#include <unistd.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -31,3 +32,5 @@
 #include "Input.h"
 #include "Events.h"
 #include "DogeUtil.h"
+
+#include "Map.h"
