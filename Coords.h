@@ -5,11 +5,37 @@
 
 //#define dirROR(d)			(((d)&1)<<1^((d)^1))
 //#define dirROL(d)			(((d)^1)<<1^((d)^1))
-#define dirINV(d)			((d)^0b10)
-#define dirLR(d)			((d)&1)
-#define dirUD(d)			(!((d)&1))
-#define dirPOS(d)			((d)==DIR_R||(d)==DIR_D)
-#define dirNEG(d)			((d)==DIR_L||(d)==DIR_U)
+static inline
+Direction dirINV(const Direction dir)
+{
+	return dir^0b10;
+}
+
+static inline
+Direction dirLR(const Direction dir)
+{
+	return dir&1;
+}
+
+static inline
+Direction dirUD(const Direction dir)
+{
+	return !(dir&1);
+}
+
+static inline
+Direction dirPOS(const Direction dir)
+{
+	return dir==DIR_R||dir==DIR_D;
+}
+
+static inline
+Direction dirNEG(const Direction dir)
+{
+	return dir==DIR_L||dir==DIR_U;
+}
+
+
 
 static inline
 int coordMin(const Coord coord)

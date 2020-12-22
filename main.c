@@ -1,59 +1,115 @@
 #include "Includes.h"
 
-Coord tileScreenMid(const Coord tile, const uint scale)
+typedef struct{
+	Coord tpos;
+	uint toff;
+	uint scale;
+	Direction dir;
+	Direction turn;
+	bool power;
+	Ticks powerEnd;
+	bool frozen;
+	Ticks frozenEnd;
+	bool warpable;
+}Pac;
+
+bool dirKey(const Direction dir)
 {
-	return coordAdd(coordMul(tile, scale), scale/2);
+	const SDL_Scancode keys[4] = {
+		SDL_SCANCODE_W,
+		SDL_SCANCODE_D,
+		SDL_SCANCODE_S,
+		SDL_SCANCODE_A
+	};
+	return keyState(keys[dir]);
 }
 
-bool checkDir(const Map map, const Coord coord, const Direction dir)
+bool dirKeyEx(const Direction dir)
 {
-	const RangePair bound={(Range){0, map.len.x},(Range){0, map.len.y}};
-	const Coord adj = coordShift(coord, dir, 1);
-	if(!coordInRangePair(adj, bound))
-		return false;
-	return map.text[adj.x][adj.y] == map.text[coord.x][coord.y];
+	return dirKey(dir) && !dirKey(dirINV(dir));
 }
 
-void drawWall(const Map map, const Coord coord)
+Coord getPacWpos(const Pac pac)
 {
-	setColor(BLUE);
-	const Coord mid = tileScreenMid(coord, map.scale);
-	for(Direction dir = DIR_U; dir <= DIR_L; dir++){
-		if(checkDir(map, (Coord){coord.x,coord.y}, dir)){
-			drawLineCoords(
-				mid,
-				coordShift(mid,dir,map.scale/2)
-			);
+	return coordShift(coordShift(
+		tposToWposm(pac.tpos, pac.scale),dirINV(pac.dir),
+		pac.scale/2), pac.dir, pac.toff);
+}
+
+bool traversable(const char c)
+{
+	if(c == ' ' || c == '.' || c == 'o' || (c >= '0' && c <= '9'))
+		return true;
+	return false;
+}
+
+Pac movePac(Pac pac, const Map map)
+{
+	const Ticks now = getTicks();
+	pac.power = now < pac.powerEnd;
+	if(now < (pac.frozen = pac.frozenEnd))
+		return pac;
+
+	const uint scale = map.scale;
+	const uint hscale = scale/2;
+
+	bool canMove[4] = {0};
+	const bool intersection = pac.toff == hscale;
+	if(intersection){
+		for(Direction dir = DIR_U; dir <= DIR_L; dir++){
+			const Coord pos = coordShift(pac.tpos, dir, 1);
+			if(!inMap(pos, map.len))
+				continue;
+			canMove[dir] = traversable(map.text[pos.x][pos.y]);
+		}
+	}else{
+		const Coord fpos = coordShift(pac.tpos, pac.dir, 1);
+		if(inMap(fpos, map.len)){
+			canMove[pac.dir] =
+				traversable(map.text[fpos.x][fpos.y]);
+		}
+		const Coord bpos = coordShift(pac.tpos, dirINV(pac.dir), 1);
+		if(inMap(bpos, map.len)){
+			canMove[dirINV(pac.dir)] =
+				traversable(map.text[bpos.x][bpos.y]);
 		}
 	}
+
+	if(intersection){
+		if(dirKeyEx(dirROL(pac.dir)) && canMove[dirROL(pac.dir)]){
+			pac.dir = dirROL(pac.dir);
+			pac.toff++;
+			return pac;
+		}
+		if(dirKeyEx(dirROR(pac.dir)) && canMove[dirROR(pac.dir)]){
+			pac.dir = dirROR(pac.dir);
+			pac.toff++;
+			return pac;
+		}
+	}
+
+	if(dirKeyEx(dirINV(pac.dir)) && canMove[dirINV(pac.dir)]){
+		pac.dir = dirINV(pac.dir);
+		pac.toff = pac.scale - pac.toff;
+		return pac;
+	}
+	if(canMove[pac.dir]){
+		pac.toff++;
+		if(pac.toff <= pac.scale)
+			return pac;
+		pac.toff = 0;
+		pac.tpos = coordShift(pac.tpos, pac.dir, 1);
+	}
+	return pac;
 }
 
-void drawDot(const Map map, const Coord coord, const bool big)
+void drawPac(const Pac pac)
 {
+	const Coord wpos = getPacWpos(pac);
 	setColor(YELLOW);
-	fillCircleCoord(
-		tileScreenMid(coord, map.scale),
-		big ? map.scale/3 : map.scale/6
-	);
-}
-
-void drawMap(const Map map)
-{
-	for(uint y = 0; y < map.len.y; y++){
-		for(uint x = 0; x < map.len.x; x++){
-			switch(map.text[x][y]){
-				case '#':
-					drawWall(map, (Coord){x,y});
-					break;
-				case '.':
-					drawDot(map, (Coord){x,y}, false);
-					break;
-				case 'o':
-					drawDot(map, (Coord){x,y}, true);
-					break;
-			}
-		}
-	}
+	fillCircleCoord(wpos, pac.scale - pac.scale/4);
+	setColor(RED);
+	drawLineCoords(wpos, coordShift(wpos, pac.dir, pac.scale - pac.scale/4));
 }
 
 int main(int argc, char const *argv[])
@@ -64,13 +120,17 @@ int main(int argc, char const *argv[])
 	init(window);
 	setFontSize(map.scale);
 
-	const SDL_Scancode dirKey[4] = {
-		SDL_SCANCODE_W,
-		SDL_SCANCODE_D,
-		SDL_SCANCODE_S,
-		SDL_SCANCODE_A
+	Pac pac = {
+		.tpos = getSpawnCoord(map),
+		.toff = map.scale/2,
+		.scale = map.scale,
+		.dir = getSpawnDir(map, pac.tpos),
+		.turn = pac.dir,
+		.power = false,
+		.powerEnd = 0,
+		.frozen = true,
+		.frozenEnd = getTicksIn(3)
 	};
-
 	while(1){
 		Ticks frameStart = getTicks();
 		clear();
@@ -79,7 +139,9 @@ int main(int argc, char const *argv[])
 		// 	pos = coordShift(pos, dir, keyState(dirKey[dir])?4:0);
 
 		// drawTextCenteredCoord(pos, "DogeLib :3");
+		pac = movePac(pac, map);
 		drawMap(map);
+		drawPac(pac);
 		draw();
 		events(frameStart + TPF);
 	}

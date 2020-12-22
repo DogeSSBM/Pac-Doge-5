@@ -6,6 +6,65 @@ typedef struct{
 	char **text;
 }Map;
 
+bool inMap(const Coord coord, const Length len)
+{
+	return coordInRangePair(
+		coord,
+		(RangePair){(Range){0, len.x},(Range){0, len.y}}
+	);
+}
+
+Coord tposToWposm(const Coord tile, const uint scale)
+{
+	return coordAdd(coordMul(tile, scale), scale/2);
+}
+
+bool checkDir(const Map map,const Coord coord,const Direction dir,const char c)
+{
+	const RangePair bound={(Range){0, map.len.x},(Range){0, map.len.y}};
+	const Coord adj = coordShift(coord, dir, 1);
+	if(!coordInRangePair(adj, bound))
+		return false;
+	return map.text[adj.x][adj.y] == c;
+}
+
+Coord getSpawnCoord(const Map map)
+{
+	bool found = false;
+	Coord ret = {-1, -1};
+	for(uint y = 0; y < map.len.y; y++){
+		for(uint x = 0; x < map.len.x; x++){
+			if(map.text[x][y] == 'P'){
+				if(found){
+					printf("There can be only one spawn\n");
+					printf("Spawn 1: (%2u,%2u)\n", ret.x, ret.y);
+					printf("Spawn 2: (%2u,%2u)\n", x, y);
+					exit(0);
+				}
+				ret.x = x;
+				ret.y = y;
+				found = true;
+			}
+		}
+	}
+	if(!found){
+		printf("Could not find spawn\n");
+		exit(0);
+	}
+	return ret;
+}
+
+Direction getSpawnDir(const Map map, const Coord spawn)
+{
+	for(Direction dir = DIR_U; dir <= DIR_L; dir++){
+		if(checkDir(map, spawn, dir, 'f'))
+			return dir;
+	}
+	printf("Spawn must have an adjacent 'f'\n");
+	exit(0);
+	return DIR_L;
+}
+
 uint getMapLineLen(File *mapFile)
 {
 	int c;

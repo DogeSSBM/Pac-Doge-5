@@ -34,3 +34,5 @@
 #include "DogeUtil.h"
 
 #include "Map.h"
+#include "Pac.h"
+#include "Draw.h"
