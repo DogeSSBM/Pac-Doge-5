@@ -91,6 +91,7 @@ WINDOWED	Types.h	/^	WINDOWED	=		0$/;"	e	enum:__anon1
 WindowMode	Types.h	/^}WindowMode;$/;"	t	typeref:enum:__anon1
 YELLOW	Colors.h	/^const Color YELLOW	= {0xFF, 0xFF, 0x00, 0xFF};$/;"	v
 ZFLOOR	Types.h	37;"	d
+adjKeyEx	main.c	/^bool* adjKeyEx(void)$/;"	f
 arr	3D.h	/^	int arr[3];$/;"	m	union:__anon23
 arr	Types.h	/^	Coord arr[2];$/;"	m	union:__anon7
 arr	Types.h	/^	float arr[2];$/;"	m	union:__anon12
@@ -193,6 +194,7 @@ getColor	Graphics.h	/^Color getColor(void)$/;"	f
 getInt	GetInt.h	/^int getInt(void)$/;"	f
 getMapLen	Map.h	/^Length getMapLen(File *mapFile)$/;"	f
 getMapLineLen	Map.h	/^uint getMapLineLen(File *mapFile)$/;"	f
+getPacTurn	main.c	/^Direction getPacTurn(const Pac pac, const bool *canMove)$/;"	f
 getPacWpos	main.c	/^Coord getPacWpos(const Pac pac)$/;"	f
 getR	GetInt.h	/^int getR(const int num)$/;"	f
 getSpawnCoord	Map.h	/^Coord getSpawnCoord(const Map map)$/;"	f
@@ -289,6 +291,9 @@ toff	main.c	/^	uint toff;$/;"	m	struct:__anon27	file:
 tpos	main.c	/^	Coord tpos;$/;"	m	struct:__anon27	file:
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
 traversable	main.c	/^bool traversable(const char c)$/;"	f
+traversableAdjAtToff	main.c	/^bool* traversableAdjAtToff(const Pac pac)$/;"	f
+traversableAdjAtTpos	main.c	/^bool* traversableAdjAtTpos(const Coord tpos, const Map map)$/;"	f
+traversableAt	main.c	/^bool traversableAt(const Coord tpos, const Map map)$/;"	f
 turn	main.c	/^	Direction turn;$/;"	m	struct:__anon27	file:
 u16	Types.h	/^typedef uint16_t			u16;$/;"	t
 u32	Types.h	/^typedef uint32_t			u32;$/;"	t

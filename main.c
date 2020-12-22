@@ -15,13 +15,19 @@ typedef struct{
 
 bool dirKey(const Direction dir)
 {
-	const SDL_Scancode keys[4] = {
+	const SDL_Scancode wasd[4] = {
 		SDL_SCANCODE_W,
 		SDL_SCANCODE_D,
 		SDL_SCANCODE_S,
 		SDL_SCANCODE_A
 	};
-	return keyState(keys[dir]);
+	const SDL_Scancode dpad[4] = {
+		SDL_SCANCODE_UP,
+		SDL_SCANCODE_RIGHT,
+		SDL_SCANCODE_DOWN,
+		SDL_SCANCODE_LEFT
+	};
+	return keyState(wasd[dir] || dpad[dir]);
 }
 
 bool dirKeyEx(const Direction dir)
@@ -43,6 +49,53 @@ bool traversable(const char c)
 	return false;
 }
 
+bool traversableAt(const Coord tpos, const Map map)
+{
+	return coordInRangePair(tpos,
+			(RangePair){(Range){0,map.len.x},(Range){0,map.len.y}}) &&
+		traversable(map.text[tpos.x][tpos.y]);
+}
+
+bool* traversableAdjAtTpos(const Coord tpos, const Map map)
+{
+	static bool adj[4];
+	memset(adj, 0, sizeof(bool));
+	for(Direction d = DIR_U; d <= DIR_L; d++)
+		adj[d] = traversableAt(coordShift(tpos, d, 1), map);
+	return adj;
+}
+
+bool* traversableAdjAtToff(const Pac pac)
+{
+	static bool adj[4];
+	memset(adj, 0, sizeof(bool));
+	adj[pac.dir] = true;
+	adj[dirINV(pac.dir)] = true;
+	adj[dirROL(pac.dir)] = pac.toff == pac.scale/2;
+	adj[dirROR(pac.dir)] = pac.toff == pac.scale/2;
+	return adj;
+}
+
+bool* adjKeyEx(void)
+{
+	static bool adj[4];
+	memset(adj, 0, sizeof(bool));
+	for(uint i = 0; i < 4; i++)
+		adj[i] = dirKeyEx(i);
+	return adj;
+}
+
+Direction getPacTurn(const Pac pac, const bool *canMove)
+{
+	if(dirKeyEx(dirINV(pac.dir)) && canMove[dirINV(pac.dir)])
+		return dirINV(pac.dir);
+	if(dirKeyEx(dirROR(pac.dir)) && canMove[dirROR(pac.dir)])
+		return dirROR(pac.dir);
+	if(dirKeyEx(dirROL(pac.dir)) && canMove[dirROL(pac.dir)])
+		return dirROL(pac.dir);
+	return  pac.dir;
+}
+
 Pac movePac(Pac pac, const Map map)
 {
 	const Ticks now = getTicks();
@@ -50,55 +103,23 @@ Pac movePac(Pac pac, const Map map)
 	if(now < (pac.frozen = pac.frozenEnd))
 		return pac;
 
-	const uint scale = map.scale;
-	const uint hscale = scale/2;
-
-	bool canMove[4] = {0};
-	const bool intersection = pac.toff == hscale;
-	if(intersection){
-		for(Direction dir = DIR_U; dir <= DIR_L; dir++){
-			const Coord pos = coordShift(pac.tpos, dir, 1);
-			if(!inMap(pos, map.len))
-				continue;
-			canMove[dir] = traversable(map.text[pos.x][pos.y]);
-		}
-	}else{
-		const Coord fpos = coordShift(pac.tpos, pac.dir, 1);
-		if(inMap(fpos, map.len)){
-			canMove[pac.dir] =
-				traversable(map.text[fpos.x][fpos.y]);
-		}
-		const Coord bpos = coordShift(pac.tpos, dirINV(pac.dir), 1);
-		if(inMap(bpos, map.len)){
-			canMove[dirINV(pac.dir)] =
-				traversable(map.text[bpos.x][bpos.y]);
+	bool* adjTpos = traversableAdjAtTpos(pac.tpos, map);
+	bool* adjToff = traversableAdjAtToff(pac);
+	bool* adjKeys = adjKeyEx();
+	for(uint i = 0; i < 4; i++){
+		if(adjKeys[i] && adjTpos[i] && adjToff[i]){
+			pac.dir = i;
+			break;
 		}
 	}
 
-	if(intersection){
-		if(dirKeyEx(dirROL(pac.dir)) && canMove[dirROL(pac.dir)]){
-			pac.dir = dirROL(pac.dir);
-			pac.toff++;
-			return pac;
-		}
-		if(dirKeyEx(dirROR(pac.dir)) && canMove[dirROR(pac.dir)]){
-			pac.dir = dirROR(pac.dir);
-			pac.toff++;
-			return pac;
-		}
-	}
 
-	if(dirKeyEx(dirINV(pac.dir)) && canMove[dirINV(pac.dir)]){
-		pac.dir = dirINV(pac.dir);
-		pac.toff = pac.scale - pac.toff;
-		return pac;
-	}
-	if(canMove[pac.dir]){
+	if(adjToff[pac.dir] && (pac.toff < pac.scale/2 || adjTpos[pac.dir])){
 		pac.toff++;
-		if(pac.toff <= pac.scale)
-			return pac;
-		pac.toff = 0;
-		pac.tpos = coordShift(pac.tpos, pac.dir, 1);
+		if(pac.toff >= pac.scale){
+			pac.toff = 0;
+			pac.tpos = coordShift(pac.tpos, pac.dir, 1);
+		}
 	}
 	return pac;
 }
