@@ -56,7 +56,7 @@ bool traversableAt(const Coord tpos, const Map map)
 		traversable(map.text[tpos.x][tpos.y]);
 }
 
-bool* traversableAdjAtTpos(const Coord tpos, const Map map)
+bool* traversableAdjTiles(const Coord tpos, const Map map)
 {
 	static bool adj[4];
 	memset(adj, 0, sizeof(bool));
@@ -65,35 +65,26 @@ bool* traversableAdjAtTpos(const Coord tpos, const Map map)
 	return adj;
 }
 
-bool* traversableAdjAtToff(const Pac pac)
+bool* validMoveDirs(const Pac pac, const Map map)
 {
-	static bool adj[4];
-	memset(adj, 0, sizeof(bool));
-	adj[pac.dir] = true;
-	adj[dirINV(pac.dir)] = true;
-	adj[dirROL(pac.dir)] = pac.toff == pac.scale/2;
-	adj[dirROR(pac.dir)] = pac.toff == pac.scale/2;
-	return adj;
+	const uint mid = pac.scale/2;
+	bool* valid = traversableAdjTiles(pac.tpos, map);
+	if(pac.toff != mid){
+		valid[dirROL(pac.dir)] = false;
+		valid[dirROR(pac.dir)] = false;
+	}
+	valid[pac.dir] = valid[pac.dir] || pac.toff < mid;
+	valid[dirINV(pac.dir)] = valid[dirINV(pac.dir)] || pac.toff > mid;
+	return valid;
 }
 
-bool* adjKeyEx(void)
+bool* pressedKeyDir(void)
 {
 	static bool adj[4];
 	memset(adj, 0, sizeof(bool));
 	for(uint i = 0; i < 4; i++)
 		adj[i] = dirKeyEx(i);
 	return adj;
-}
-
-Direction getPacTurn(const Pac pac, const bool *canMove)
-{
-	if(dirKeyEx(dirINV(pac.dir)) && canMove[dirINV(pac.dir)])
-		return dirINV(pac.dir);
-	if(dirKeyEx(dirROR(pac.dir)) && canMove[dirROR(pac.dir)])
-		return dirROR(pac.dir);
-	if(dirKeyEx(dirROL(pac.dir)) && canMove[dirROL(pac.dir)])
-		return dirROL(pac.dir);
-	return  pac.dir;
 }
 
 Pac movePac(Pac pac, const Map map)
@@ -103,24 +94,26 @@ Pac movePac(Pac pac, const Map map)
 	if(now < (pac.frozen = pac.frozenEnd))
 		return pac;
 
-	bool* adjTpos = traversableAdjAtTpos(pac.tpos, map);
-	bool* adjToff = traversableAdjAtToff(pac);
-	bool* adjKeys = adjKeyEx();
+	bool *moveDir = validMoveDirs(pac, map);
 	for(uint i = 0; i < 4; i++){
-		if(adjKeys[i] && adjTpos[i] && adjToff[i]){
+		setColor(moveDir[i]?GREEN:RED);
+		fillCircleCoord(coordShift(getPacWpos(pac), i, pac.scale/4),pac.scale/8);
+	}
+	bool *keyDir = pressedKeyDir();
+
+	for(uint i = 0; i < 4; i++){
+		if(moveDir[i] && keyDir[i])
 			pac.dir = i;
-			break;
-		}
 	}
 
-
-	if(adjToff[pac.dir] && (pac.toff < pac.scale/2 || adjTpos[pac.dir])){
+	if(moveDir[pac.dir]){
 		pac.toff++;
 		if(pac.toff >= pac.scale){
 			pac.toff = 0;
 			pac.tpos = coordShift(pac.tpos, pac.dir, 1);
 		}
 	}
+
 	return pac;
 }
 
@@ -128,8 +121,8 @@ void drawPac(const Pac pac)
 {
 	const Coord wpos = getPacWpos(pac);
 	setColor(YELLOW);
-	fillCircleCoord(wpos, pac.scale - pac.scale/4);
-	setColor(RED);
+	//fillCircleCoord(wpos, pac.scale - pac.scale/4);
+	setColor(WHITE);
 	drawLineCoords(wpos, coordShift(wpos, pac.dir, pac.scale - pac.scale/4));
 }
 

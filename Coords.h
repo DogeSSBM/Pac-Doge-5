@@ -1,54 +1,83 @@
 #pragma once
 
-#define dirROR(d)			(((d)+1)&0b11)
-#define dirROL(d)			(((d)-1)&0b11)
+// returns dir rotated 90deg left (counter-clockwise)
+static inline
+Direction dirROR(const Direction dir)
+{
+	return (dir+1)&0b11;
+}
 
-//#define dirROR(d)			(((d)&1)<<1^((d)^1))
-//#define dirROL(d)			(((d)^1)<<1^((d)^1))
+// returns dir rotated 90deg right (clockwise)
+static inline
+Direction dirROL(const Direction dir)
+{
+	return (dir-1)&0b11;
+}
+
+// returns the inverse direction of dir
 static inline
 Direction dirINV(const Direction dir)
 {
 	return dir^0b10;
 }
 
+// returns true if dir is a horizontal direction
 static inline
 Direction dirLR(const Direction dir)
 {
 	return dir&1;
 }
 
+// returns true if dir is a vertical direction
 static inline
 Direction dirUD(const Direction dir)
 {
 	return !(dir&1);
 }
 
+// returns true if dir1 is on an axis parallel to dir2
+static inline
+bool dirAXP(const Direction dir1, const Direction dir2)
+{
+	return dirUD(dir1) == dirUD(dir2);
+}
+
+// returns true if dir1 is on an axis tangent to dir2
+static inline
+bool dirAXT(const Direction dir1, const Direction dir2)
+{
+	return dirUD(dir1) != dirUD(dir2);
+}
+
+// returns true if dir points in the positive direction along its axis
 static inline
 Direction dirPOS(const Direction dir)
 {
 	return dir==DIR_R||dir==DIR_D;
 }
 
+// returns true if dir points in the negative direction along its axis
 static inline
 Direction dirNEG(const Direction dir)
 {
 	return dir==DIR_L||dir==DIR_U;
 }
 
-
-
+// returns the lesser component of coord
 static inline
 int coordMin(const Coord coord)
 {
 	return coord.c1 < coord.c2 ? coord.c1 : coord.c2;
 }
 
+// returns the greater component of coord
 static inline
 int coordMax(const Coord coord)
 {
 	return coord.c1 > coord.c2 ? coord.c1 : coord.c2;
 }
 
+// true if components of pos1 equal their respective components of pos2
 static inline
 bool coordSame(const Coord pos1, const Coord pos2)
 {
@@ -80,6 +109,7 @@ bool inRange(const int n, const Range range)
 	return n >= range.min && n < range.max;
 }
 
+// think pacman (going of left side of screen, wraps back around to the right)
 static inline
 int wrap(const int n, const int min, const int max)
 {
@@ -104,12 +134,14 @@ bool coordInRangePair(const Coord coord, const RangePair range)
 	return inRange(coord.x, range.x) && inRange(coord.y, range.y);
 }
 
+// returns rect with coord1 and coord2 as opposite corners
 static inline
-Rect	coordPairToRect(const Coord coord1, const Coord coord2)
+Rect coordPairToRect(const Coord coord1, const Coord coord2)
 {
 	return (Rect){coord1.x,coord1.y,coord2.x-coord1.x,coord2.y-coord1.y};
 }
 
+// returns opposite corners as a pair of coordinates
 static inline
 CoordPair rectToCoordPair(const Rect rect)
 {
@@ -119,7 +151,6 @@ CoordPair rectToCoordPair(const Rect rect)
 	};
 }
 
-
 // Returns true if coord is in rect
 static inline
 bool coordInRect(const Coord coord, const Rect rect)
@@ -127,12 +158,14 @@ bool coordInRect(const Coord coord, const Rect rect)
 	return coordInRangePair(coord, rectToCoordPair(rect));
 }
 
+// true if either component of coord is non zero
 static inline
 bool coordNz(const Coord coord)
 {
 	return coord.x||coord.y;
 }
 
+// multiplies each component of coord by num
 static inline
 Coord coordMul(const Coord coord, const int num)
 {
@@ -140,42 +173,52 @@ Coord coordMul(const Coord coord, const int num)
 	return ret;
 }
 
+// multiplies each component of coord by the respective component in coord2
 static inline
 Coord coordOffsetMul(const Coord coord1, const Coord coord2)
 {
 	return (Coord){coord1.x*coord2.x,coord1.y*coord2.y};
 }
 
+// multiplies each component of coord by the respective component in coord2
+// (floating point)
 static inline
 Coordf coordfOffsetMul(const Coordf coord1, const Coordf coord2)
 {
 	return (Coordf){coord1.x*coord2.x,coord1.y*coord2.y};
 }
 
+// inverts the sign of both components of coord
 static inline
 Coord coordInv(const Coord coord)
 {
 	return (Coord){-coord.x, -coord.y};
 }
 
+// adds num to each component of coord
 static inline
-Coord coordAdd(const Coord coord1, const uint num)
+Coord coordAdd(const Coord coord, const uint num)
 {
-	return (Coord){coord1.x+num,coord1.y+num};
+	return (Coord){coord.x+num,coord.y+num};
 }
 
+// subtracts each component of coord1 by the respective component in coord2
 static inline
 Coord coordSub(const Coord coord1, const Coord coord2)
 {
 	return (Offset){coord1.x-coord2.x,coord1.y-coord2.y};
 }
 
+// distance between coord1 and coord2
+// (floating point)
 static inline
 float coordfDist(const Coordf coord1, const Coordf coord2)
 {
 	return sqrtf(powf(coord2.x-coord1.x,2.0f)+powf(coord2.y-coord1.y,2.0f));
 }
 
+// divide each component of coord by num
+// (floating point)
 static inline
 Coordf coordfDiv(const Coordf coord, const float num)
 {
@@ -239,34 +282,23 @@ Coord coordShift(const Coord coord, const Direction dir, const int units)
 static inline
 Coord coordOffset(const Coord coord, const Offset off)
 {
-	return coordShift(
-		coordShift(
-			coord,
-			DIR_R,
-			off.x
-		),
-		DIR_D,
-		off.y
-	);
+	return (Coord){coord.x+off.x, coord.y+off.y};
 }
 
 static inline
 Offset offsetRor(const Offset off)
 {
-	const Offset ret = {-off.y, off.x};
-	return ret;
+	return (Offset){-off.y, off.x};
 }
 
 static inline
 Offset offsetRol(const Offset off)
 {
-	const Offset ret = {off.y, -off.x};
-	return ret;
+	return (Offset){off.y, -off.x};
 }
 
 static inline
 Offset offsetFlip(const Offset off)
 {
-	const Offset ret = {-off.x, -off.y};
-	return ret;
+	return (Offset){-off.x, -off.y};
 }

@@ -91,7 +91,6 @@ WINDOWED	Types.h	/^	WINDOWED	=		0$/;"	e	enum:__anon1
 WindowMode	Types.h	/^}WindowMode;$/;"	t	typeref:enum:__anon1
 YELLOW	Colors.h	/^const Color YELLOW	= {0xFF, 0xFF, 0x00, 0xFF};$/;"	v
 ZFLOOR	Types.h	37;"	d
-adjKeyEx	main.c	/^bool* adjKeyEx(void)$/;"	f
 arr	3D.h	/^	int arr[3];$/;"	m	union:__anon23
 arr	Types.h	/^	Coord arr[2];$/;"	m	union:__anon7
 arr	Types.h	/^	float arr[2];$/;"	m	union:__anon12
@@ -110,7 +109,7 @@ clearTerminal	DogeUtil.h	/^void clearTerminal(void)$/;"	f
 colorToU32	Graphics.h	/^u32 colorToU32(const Color c)$/;"	f
 coord3Project	3D.h	/^Coord coord3Project(const Coord3 c3, const Range win, const Offset zscale)$/;"	f
 coord3Shift	3D.h	/^Coord3 coord3Shift(const Coord3 c3, const Direction3 d3, const int units)$/;"	f
-coordAdd	Coords.h	/^Coord coordAdd(const Coord coord1, const uint num)$/;"	f
+coordAdd	Coords.h	/^Coord coordAdd(const Coord coord, const uint num)$/;"	f
 coordClamp	Coords.h	/^Coord coordClamp(const Coord coord, const Range x, const Range y)$/;"	f
 coordDistSq	Coords.h	/^uint coordDistSq(const Coord coord1, const Coord coord2)$/;"	f
 coordDiv	Coords.h	/^Coord coordDiv(const Coord coord, const int num)$/;"	f
@@ -124,7 +123,7 @@ coordMul	Coords.h	/^Coord coordMul(const Coord coord, const int num)$/;"	f
 coordNz	Coords.h	/^bool coordNz(const Coord coord)$/;"	f
 coordOffset	Coords.h	/^Coord coordOffset(const Coord coord, const Offset off)$/;"	f
 coordOffsetMul	Coords.h	/^Coord coordOffsetMul(const Coord coord1, const Coord coord2)$/;"	f
-coordPairToRect	Coords.h	/^Rect	coordPairToRect(const Coord coord1, const Coord coord2)$/;"	f
+coordPairToRect	Coords.h	/^Rect coordPairToRect(const Coord coord1, const Coord coord2)$/;"	f
 coordSame	Coords.h	/^bool coordSame(const Coord pos1, const Coord pos2)$/;"	f
 coordShift	Coords.h	/^Coord coordShift(const Coord coord, const Direction dir, const int units)$/;"	f
 coordSub	Coords.h	/^Coord coordSub(const Coord coord1, const Coord coord2)$/;"	f
@@ -137,14 +136,16 @@ coordfToRads	Angles.h	/^float coordfToRads(const Coordf coord)$/;"	f
 defaultColor	Graphics.h	/^	Color defaultColor;$/;"	m	struct:__anon18
 dimensionShift	3D.h	/^Coord3 dimensionShift(const Coord3 c3, const Dimension dim, const int units)$/;"	f
 dir	main.c	/^	Direction dir;$/;"	m	struct:__anon27	file:
+dirAXP	Coords.h	/^bool dirAXP(const Direction dir1, const Direction dir2)$/;"	f
+dirAXT	Coords.h	/^bool dirAXT(const Direction dir1, const Direction dir2)$/;"	f
 dirINV	Coords.h	/^Direction dirINV(const Direction dir)$/;"	f
 dirKey	main.c	/^bool dirKey(const Direction dir)$/;"	f
 dirKeyEx	main.c	/^bool dirKeyEx(const Direction dir)$/;"	f
 dirLR	Coords.h	/^Direction dirLR(const Direction dir)$/;"	f
 dirNEG	Coords.h	/^Direction dirNEG(const Direction dir)$/;"	f
 dirPOS	Coords.h	/^Direction dirPOS(const Direction dir)$/;"	f
-dirROL	Coords.h	4;"	d
-dirROR	Coords.h	3;"	d
+dirROL	Coords.h	/^Direction dirROL(const Direction dir)$/;"	f
+dirROR	Coords.h	/^Direction dirROR(const Direction dir)$/;"	f
 dirUD	Coords.h	/^Direction dirUD(const Direction dir)$/;"	f
 draw	Graphics.h	/^void draw(void)$/;"	f
 drawCircle	Graphics.h	/^void drawCircle(const uint x, const uint y, const uint radius)$/;"	f
@@ -194,7 +195,6 @@ getColor	Graphics.h	/^Color getColor(void)$/;"	f
 getInt	GetInt.h	/^int getInt(void)$/;"	f
 getMapLen	Map.h	/^Length getMapLen(File *mapFile)$/;"	f
 getMapLineLen	Map.h	/^uint getMapLineLen(File *mapFile)$/;"	f
-getPacTurn	main.c	/^Direction getPacTurn(const Pac pac, const bool *canMove)$/;"	f
 getPacWpos	main.c	/^Coord getPacWpos(const Pac pac)$/;"	f
 getR	GetInt.h	/^int getR(const int num)$/;"	f
 getSpawnCoord	Map.h	/^Coord getSpawnCoord(const Map map)$/;"	f
@@ -254,6 +254,7 @@ pos	Types.h	/^		float pos;$/;"	m	struct:__anon12::__anon15
 pos	Types.h	/^		int pos;$/;"	m	struct:__anon2::__anon6
 power	main.c	/^	bool power;$/;"	m	struct:__anon27	file:
 powerEnd	main.c	/^	Ticks powerEnd;$/;"	m	struct:__anon27	file:
+pressedKeyDir	main.c	/^bool* pressedKeyDir(void)$/;"	f
 prev	Input.h	/^	u8 prev[SDL_NUM_SCANCODES];$/;"	m	struct:__anon21
 prev	Input.h	/^	}prev;$/;"	m	struct:__anon19	typeref:struct:__anon19::__anon20
 printMap	Map.h	/^void printMap(const Map map)$/;"	f
@@ -291,8 +292,7 @@ toff	main.c	/^	uint toff;$/;"	m	struct:__anon27	file:
 tpos	main.c	/^	Coord tpos;$/;"	m	struct:__anon27	file:
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
 traversable	main.c	/^bool traversable(const char c)$/;"	f
-traversableAdjAtToff	main.c	/^bool* traversableAdjAtToff(const Pac pac)$/;"	f
-traversableAdjAtTpos	main.c	/^bool* traversableAdjAtTpos(const Coord tpos, const Map map)$/;"	f
+traversableAdjTiles	main.c	/^bool* traversableAdjTiles(const Coord tpos, const Map map)$/;"	f
 traversableAt	main.c	/^bool traversableAt(const Coord tpos, const Map map)$/;"	f
 turn	main.c	/^	Direction turn;$/;"	m	struct:__anon27	file:
 u16	Types.h	/^typedef uint16_t			u16;$/;"	t
@@ -303,6 +303,7 @@ uchar	Types.h	/^typedef unsigned char		uchar;$/;"	t
 uint	Types.h	/^typedef unsigned int		uint;$/;"	t
 ul	Types.h	/^typedef unsigned long		ul;$/;"	t
 ull	Types.h	/^typedef unsigned long long	ull;$/;"	t
+validMoveDirs	main.c	/^bool* validMoveDirs(const Pac pac, const Map map)$/;"	f
 vec	Input.h	/^	Offset vec;$/;"	m	struct:__anon19
 warpable	main.c	/^	bool warpable;$/;"	m	struct:__anon27	file:
 window	Graphics.h	/^	SDL_Window* window;$/;"	m	struct:__anon18
