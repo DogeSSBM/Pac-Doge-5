@@ -13,6 +13,16 @@ typedef struct{
 	bool warpable;
 }Pac;
 
+typedef union{
+	bool arr[4];
+	struct{
+		bool u;
+		bool r;
+		bool d;
+		bool l;
+	};
+}Bool4;
+
 bool dirKey(const Direction dir)
 {
 	const SDL_Scancode wasd[4] = {
@@ -51,39 +61,27 @@ bool traversable(const char c)
 
 bool traversableAt(const Coord tpos, const Map map)
 {
-	return coordInRangePair(tpos,
-			(RangePair){(Range){0,map.len.x},(Range){0,map.len.y}}) &&
-		traversable(map.text[tpos.x][tpos.y]);
+	if(inBound(tpos.x, 0, map.len.x) && inBound(tpos.y, 0, map.len.y))
+		return traversable(map.text[tpos.x][tpos.y]);
+	return false;
 }
 
-bool* traversableAdjTiles(const Coord tpos, const Map map)
-{
-	static bool adj[4];
-	memset(adj, 0, sizeof(bool));
-	for(Direction d = DIR_U; d <= DIR_L; d++)
-		adj[d] = traversableAt(coordShift(tpos, d, 1), map);
-	return adj;
-}
-
-bool* validMoveDirs(const Pac pac, const Map map)
+Bool4 validMoveDirs(const Pac pac, const Map map)
 {
 	const uint mid = pac.scale/2;
-	bool* valid = traversableAdjTiles(pac.tpos, map);
-	if(pac.toff != mid){
-		valid[dirROL(pac.dir)] = false;
-		valid[dirROR(pac.dir)] = false;
-	}
-	valid[pac.dir] = valid[pac.dir] || pac.toff < mid;
-	valid[dirINV(pac.dir)] = valid[dirINV(pac.dir)] || pac.toff > mid;
+	Bool4 valid = {0};
+	valid.arr[dirROR(pac.dir)] = pac.toff == mid && traversableAt(coordShift(pac.tpos, dirROR(pac.dir), 1), map);
+	valid.arr[dirROL(pac.dir)] = pac.toff == mid && traversableAt(coordShift(pac.tpos, dirROL(pac.dir), 1), map);
+	valid.arr[pac.dir] = pac.toff < mid || traversableAt(coordShift(pac.tpos, pac.dir, 1), map);
+	valid.arr[dirINV(pac.dir)] = pac.toff > mid || traversableAt(coordShift(pac.tpos, dirINV(pac.dir), 1), map);
 	return valid;
 }
 
-bool* pressedKeyDir(void)
+Bool4 pressedKeyDir(void)
 {
-	static bool adj[4];
-	memset(adj, 0, sizeof(bool));
+	Bool4 adj;
 	for(uint i = 0; i < 4; i++)
-		adj[i] = dirKeyEx(i);
+		adj.arr[i] = dirKeyEx(i);
 	return adj;
 }
 
@@ -94,19 +92,19 @@ Pac movePac(Pac pac, const Map map)
 	if(now < (pac.frozen = pac.frozenEnd))
 		return pac;
 
-	bool *moveDir = validMoveDirs(pac, map);
+	Bool4 moveDir = validMoveDirs(pac, map);
 	for(uint i = 0; i < 4; i++){
-		setColor(moveDir[i]?GREEN:RED);
+		setColor(moveDir.arr[i]?GREEN:RED);
 		fillCircleCoord(coordShift(getPacWpos(pac), i, pac.scale/4),pac.scale/8);
 	}
-	bool *keyDir = pressedKeyDir();
+	Bool4 keyDir = pressedKeyDir();
 
 	for(uint i = 0; i < 4; i++){
-		if(moveDir[i] && keyDir[i])
+		if(moveDir.arr[i] && keyDir.arr[i])
 			pac.dir = i;
 	}
 
-	if(moveDir[pac.dir]){
+	if(moveDir.arr[pac.dir]){
 		pac.toff++;
 		if(pac.toff >= pac.scale){
 			pac.toff = 0;

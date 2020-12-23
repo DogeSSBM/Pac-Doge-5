@@ -13,6 +13,7 @@ BLEND_NONE	Types.h	45;"	d
 BLUE	Colors.h	/^const Color BLUE 		= {0x00, 0x00, 0xFF, 0xFF};$/;"	v
 BORDERLESS	Types.h	/^	BORDERLESS	=		SDL_WINDOW_FULLSCREEN_DESKTOP,$/;"	e	enum:__anon1
 BlendMode	Types.h	/^typedef SDL_BlendMode		BlendMode;$/;"	t
+Bool4	main.c	/^}Bool4;$/;"	t	typeref:union:__anon28	file:
 CYAN	Colors.h	/^const Color CYAN		= {0x00, 0xFF, 0xFF, 0xFF};$/;"	v
 Color	Types.h	/^typedef SDL_Color 		Color;$/;"	t
 Coord	Types.h	/^}Coord, Range, Length, Offset;$/;"	t	typeref:union:__anon2
@@ -95,6 +96,7 @@ arr	3D.h	/^	int arr[3];$/;"	m	union:__anon23
 arr	Types.h	/^	Coord arr[2];$/;"	m	union:__anon7
 arr	Types.h	/^	float arr[2];$/;"	m	union:__anon12
 arr	Types.h	/^	int arr[2];$/;"	m	union:__anon2
+arr	main.c	/^	bool arr[4];$/;"	m	union:__anon28	file:
 backColor	Text.h	/^	Color backColor;$/;"	m	struct:__anon26
 bezier	Graphics.h	/^void bezier(const Coord *pos, const uint numc, const uint nums)$/;"	f
 c1	Types.h	/^		Coord c1;$/;"	m	struct:__anon7::__anon8
@@ -133,6 +135,7 @@ coordfDiv	Coords.h	/^Coordf coordfDiv(const Coordf coord, const float num)$/;"	f
 coordfNormalize	Coords.h	/^Coordf coordfNormalize(const Coordf coord)$/;"	f
 coordfOffsetMul	Coords.h	/^Coordf coordfOffsetMul(const Coordf coord1, const Coordf coord2)$/;"	f
 coordfToRads	Angles.h	/^float coordfToRads(const Coordf coord)$/;"	f
+d	main.c	/^		bool d;$/;"	m	struct:__anon28::__anon29	file:
 defaultColor	Graphics.h	/^	Color defaultColor;$/;"	m	struct:__anon18
 dimensionShift	3D.h	/^Coord3 dimensionShift(const Coord3 c3, const Dimension dim, const int units)$/;"	f
 dir	main.c	/^	Direction dir;$/;"	m	struct:__anon27	file:
@@ -227,6 +230,7 @@ keyPressed	Input.h	/^bool keyPressed(const SDL_Scancode key)$/;"	f
 keyReleased	Input.h	/^bool keyReleased(const SDL_Scancode key)$/;"	f
 keyState	Input.h	/^bool keyState(const SDL_Scancode key)$/;"	f
 keys	Input.h	/^}keys = {0};$/;"	v	typeref:struct:__anon21
+l	main.c	/^		bool l;$/;"	m	struct:__anon28::__anon29	file:
 len	Map.h	/^	Length len;$/;"	m	struct:__anon17
 lint	Types.h	/^typedef long int			lint;$/;"	t
 loadDrawImg	Image.h	/^void loadDrawImg(const char *imgFile)$/;"	f
@@ -254,11 +258,12 @@ pos	Types.h	/^		float pos;$/;"	m	struct:__anon12::__anon15
 pos	Types.h	/^		int pos;$/;"	m	struct:__anon2::__anon6
 power	main.c	/^	bool power;$/;"	m	struct:__anon27	file:
 powerEnd	main.c	/^	Ticks powerEnd;$/;"	m	struct:__anon27	file:
-pressedKeyDir	main.c	/^bool* pressedKeyDir(void)$/;"	f
+pressedKeyDir	main.c	/^Bool4 pressedKeyDir(void)$/;"	f
 prev	Input.h	/^	u8 prev[SDL_NUM_SCANCODES];$/;"	m	struct:__anon21
 prev	Input.h	/^	}prev;$/;"	m	struct:__anon19	typeref:struct:__anon19::__anon20
 printMap	Map.h	/^void printMap(const Map map)$/;"	f
 r	Text.h	/^	Rect r;$/;"	m	struct:__anon26
+r	main.c	/^		bool r;$/;"	m	struct:__anon28::__anon29	file:
 randRange	DogeUtil.h	/^float randRange(float a, float b)$/;"	f
 readMap	Map.h	/^Map readMap(const char *mapName)$/;"	f
 rectToCoordPair	Coords.h	/^CoordPair rectToCoordPair(const Rect rect)$/;"	f
@@ -292,9 +297,9 @@ toff	main.c	/^	uint toff;$/;"	m	struct:__anon27	file:
 tpos	main.c	/^	Coord tpos;$/;"	m	struct:__anon27	file:
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
 traversable	main.c	/^bool traversable(const char c)$/;"	f
-traversableAdjTiles	main.c	/^bool* traversableAdjTiles(const Coord tpos, const Map map)$/;"	f
 traversableAt	main.c	/^bool traversableAt(const Coord tpos, const Map map)$/;"	f
 turn	main.c	/^	Direction turn;$/;"	m	struct:__anon27	file:
+u	main.c	/^		bool u;$/;"	m	struct:__anon28::__anon29	file:
 u16	Types.h	/^typedef uint16_t			u16;$/;"	t
 u32	Types.h	/^typedef uint32_t			u32;$/;"	t
 u64	Types.h	/^typedef uint64_t			u64;$/;"	t
@@ -303,7 +308,7 @@ uchar	Types.h	/^typedef unsigned char		uchar;$/;"	t
 uint	Types.h	/^typedef unsigned int		uint;$/;"	t
 ul	Types.h	/^typedef unsigned long		ul;$/;"	t
 ull	Types.h	/^typedef unsigned long long	ull;$/;"	t
-validMoveDirs	main.c	/^bool* validMoveDirs(const Pac pac, const Map map)$/;"	f
+validMoveDirs	main.c	/^Bool4 validMoveDirs(const Pac pac, const Map map)$/;"	f
 vec	Input.h	/^	Offset vec;$/;"	m	struct:__anon19
 warpable	main.c	/^	bool warpable;$/;"	m	struct:__anon27	file:
 window	Graphics.h	/^	SDL_Window* window;$/;"	m	struct:__anon18
