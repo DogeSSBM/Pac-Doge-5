@@ -4,14 +4,14 @@
 static inline
 Direction dirROR(const Direction dir)
 {
-	return (dir+1)&0b11;
+	return (dir+1)%4;
 }
 
 // returns dir rotated 90deg right (clockwise)
 static inline
 Direction dirROL(const Direction dir)
 {
-	return (dir-1)&0b11;
+	return dir>0?dir-1:3;
 }
 
 // returns the inverse direction of dir
@@ -25,14 +25,14 @@ Direction dirINV(const Direction dir)
 static inline
 Direction dirLR(const Direction dir)
 {
-	return dir&1;
+	return dir==DIR_L||dir==DIR_R;
 }
 
 // returns true if dir is a vertical direction
 static inline
 Direction dirUD(const Direction dir)
 {
-	return !(dir&1);
+	return dir==DIR_U||dir==DIR_D;
 }
 
 // returns true if dir1 is on an axis parallel to dir2

@@ -153,6 +153,7 @@ dirUD	Coords.h	/^Direction dirUD(const Direction dir)$/;"	f
 draw	Graphics.h	/^void draw(void)$/;"	f
 drawCircle	Graphics.h	/^void drawCircle(const uint x, const uint y, const uint radius)$/;"	f
 drawCircleCoord	Graphics.h	/^void drawCircleCoord(const Coord pos, const uint radius)$/;"	f
+drawDbg	main.c	/^void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys)$/;"	f
 drawDot	Draw.h	/^void drawDot(const Map map, const Coord coord, const bool big)$/;"	f
 drawHLine	Graphics.h	/^void drawHLine(const uint x, const uint y, int len)$/;"	f
 drawImg	Image.h	/^void drawImg(Img *image)$/;"	f
@@ -195,6 +196,9 @@ freeImg	Image.h	/^void freeImg(Img *image)$/;"	f
 frozen	main.c	/^	bool frozen;$/;"	m	struct:__anon27	file:
 frozenEnd	main.c	/^	Ticks frozenEnd;$/;"	m	struct:__anon27	file:
 getColor	Graphics.h	/^Color getColor(void)$/;"	f
+getDirExKeys	main.c	/^Bool4 getDirExKeys(void)$/;"	f
+getDirKeyChar	Input.h	/^char getDirKeyChar(const Direction dir)$/;"	f
+getDirKeyStr	Input.h	/^const char* getDirKeyStr(const Direction dir)$/;"	f
 getInt	GetInt.h	/^int getInt(void)$/;"	f
 getMapLen	Map.h	/^Length getMapLen(File *mapFile)$/;"	f
 getMapLineLen	Map.h	/^uint getMapLineLen(File *mapFile)$/;"	f
@@ -258,7 +262,6 @@ pos	Types.h	/^		float pos;$/;"	m	struct:__anon12::__anon15
 pos	Types.h	/^		int pos;$/;"	m	struct:__anon2::__anon6
 power	main.c	/^	bool power;$/;"	m	struct:__anon27	file:
 powerEnd	main.c	/^	Ticks powerEnd;$/;"	m	struct:__anon27	file:
-pressedKeyDir	main.c	/^Bool4 pressedKeyDir(void)$/;"	f
 prev	Input.h	/^	u8 prev[SDL_NUM_SCANCODES];$/;"	m	struct:__anon21
 prev	Input.h	/^	}prev;$/;"	m	struct:__anon19	typeref:struct:__anon19::__anon20
 printMap	Map.h	/^void printMap(const Map map)$/;"	f
@@ -293,12 +296,10 @@ text	Text.h	/^	char* text;$/;"	m	struct:__anon26
 textColor	Text.h	/^	Color textColor;$/;"	m	struct:__anon26
 text_init	Text.h	/^void text_init(void)$/;"	f
 text_quit	Text.h	/^void text_quit(void)$/;"	f
-toff	main.c	/^	uint toff;$/;"	m	struct:__anon27	file:
+toff	main.c	/^	Coord toff;$/;"	m	struct:__anon27	file:
 tpos	main.c	/^	Coord tpos;$/;"	m	struct:__anon27	file:
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
 traversable	main.c	/^bool traversable(const char c)$/;"	f
-traversableAt	main.c	/^bool traversableAt(const Coord tpos, const Map map)$/;"	f
-turn	main.c	/^	Direction turn;$/;"	m	struct:__anon27	file:
 u	main.c	/^		bool u;$/;"	m	struct:__anon28::__anon29	file:
 u16	Types.h	/^typedef uint16_t			u16;$/;"	t
 u32	Types.h	/^typedef uint32_t			u32;$/;"	t
@@ -308,7 +309,7 @@ uchar	Types.h	/^typedef unsigned char		uchar;$/;"	t
 uint	Types.h	/^typedef unsigned int		uint;$/;"	t
 ul	Types.h	/^typedef unsigned long		ul;$/;"	t
 ull	Types.h	/^typedef unsigned long long	ull;$/;"	t
-validMoveDirs	main.c	/^Bool4 validMoveDirs(const Pac pac, const Map map)$/;"	f
+validAdjTiles	main.c	/^Bool4 validAdjTiles(const Pac pac, const Map map)$/;"	f
 vec	Input.h	/^	Offset vec;$/;"	m	struct:__anon19
 warpable	main.c	/^	bool warpable;$/;"	m	struct:__anon27	file:
 window	Graphics.h	/^	SDL_Window* window;$/;"	m	struct:__anon18

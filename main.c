@@ -2,10 +2,9 @@
 
 typedef struct{
 	Coord tpos;
-	uint toff;
+	Coord toff;
 	uint scale;
 	Direction dir;
-	Direction turn;
 	bool power;
 	Ticks powerEnd;
 	bool frozen;
@@ -47,9 +46,7 @@ bool dirKeyEx(const Direction dir)
 
 Coord getPacWpos(const Pac pac)
 {
-	return coordShift(coordShift(
-		tposToWposm(pac.tpos, pac.scale),dirINV(pac.dir),
-		pac.scale/2), pac.dir, pac.toff);
+	return coordOffset(tposToWposm(pac.tpos, pac.scale),pac.toff);
 }
 
 bool traversable(const char c)
@@ -59,59 +56,45 @@ bool traversable(const char c)
 	return false;
 }
 
-bool traversableAt(const Coord tpos, const Map map)
+Bool4 validAdjTiles(const Pac pac, const Map map)
 {
-	if(inBound(tpos.x, 0, map.len.x) && inBound(tpos.y, 0, map.len.y))
-		return traversable(map.text[tpos.x][tpos.y]);
-	return false;
+	Bool4 adjt = {0};
+	for(uint i = 0; i < 4; i++){
+		const Coord t = coordShift(pac.tpos, i, 1);
+		adjt.arr[i] =
+			inBound(t.x, 0, map.len.x) &&
+			inBound(t.y, 0, map.len.y) &&
+			traversable(map.text[t.x][t.y]);
+	}
+	return adjt;
 }
 
-Bool4 validMoveDirs(const Pac pac, const Map map)
+Bool4 getDirExKeys(void)
 {
-	const uint mid = pac.scale/2;
-	Bool4 valid = {0};
-	valid.arr[dirROR(pac.dir)] = pac.toff == mid && traversableAt(coordShift(pac.tpos, dirROR(pac.dir), 1), map);
-	valid.arr[dirROL(pac.dir)] = pac.toff == mid && traversableAt(coordShift(pac.tpos, dirROL(pac.dir), 1), map);
-	valid.arr[pac.dir] = pac.toff < mid || traversableAt(coordShift(pac.tpos, pac.dir, 1), map);
-	valid.arr[dirINV(pac.dir)] = pac.toff > mid || traversableAt(coordShift(pac.tpos, dirINV(pac.dir), 1), map);
-	return valid;
-}
-
-Bool4 pressedKeyDir(void)
-{
-	Bool4 adj;
+	Bool4 dirKeys = {0};
 	for(uint i = 0; i < 4; i++)
-		adj.arr[i] = dirKeyEx(i);
-	return adj;
+		dirKeys.arr[i] = dirKeyEx(i);
+	return dirKeys;
+}
+
+void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys)
+{
+	const Coord wpos = getPacWpos(pac);
+	setColor(WHITE);
+	fillCircleCoord(wpos, pac.scale/8);
+	for(uint i = 0; i < 4; i++){
+		setColor(validAdjT.arr[i]?GREEN:RED);
+		fillCircleCoord(coordShift(wpos, i, pac.scale/8), pac.scale/8);
+		setFontColor(dirKeys.arr[i]?GREEN:RED);
+		drawTextCenteredCoord(coordShift(wpos, i, pac.scale/4),getDirKeyStr(i));
+	}
 }
 
 Pac movePac(Pac pac, const Map map)
 {
-	const Ticks now = getTicks();
-	pac.power = now < pac.powerEnd;
-	if(now < (pac.frozen = pac.frozenEnd))
-		return pac;
-
-	Bool4 moveDir = validMoveDirs(pac, map);
-	for(uint i = 0; i < 4; i++){
-		setColor(moveDir.arr[i]?GREEN:RED);
-		fillCircleCoord(coordShift(getPacWpos(pac), i, pac.scale/4),pac.scale/8);
-	}
-	Bool4 keyDir = pressedKeyDir();
-
-	for(uint i = 0; i < 4; i++){
-		if(moveDir.arr[i] && keyDir.arr[i])
-			pac.dir = i;
-	}
-
-	if(moveDir.arr[pac.dir]){
-		pac.toff++;
-		if(pac.toff >= pac.scale){
-			pac.toff = 0;
-			pac.tpos = coordShift(pac.tpos, pac.dir, 1);
-		}
-	}
-
+	const Bool4 validAdjT = validAdjTiles(pac, map);
+	const Bool4 dirKeys = getDirExKeys();
+	drawDbg(pac, validAdjT, dirKeys);
 	return pac;
 }
 
@@ -119,7 +102,7 @@ void drawPac(const Pac pac)
 {
 	const Coord wpos = getPacWpos(pac);
 	setColor(YELLOW);
-	//fillCircleCoord(wpos, pac.scale - pac.scale/4);
+	fillCircleCoord(wpos, pac.scale - pac.scale/4);
 	setColor(WHITE);
 	drawLineCoords(wpos, coordShift(wpos, pac.dir, pac.scale - pac.scale/4));
 }
@@ -134,15 +117,15 @@ int main(int argc, char const *argv[])
 
 	Pac pac = {
 		.tpos = getSpawnCoord(map),
-		.toff = map.scale/2,
+		.toff = {-map.scale/2, 0},
 		.scale = map.scale,
 		.dir = getSpawnDir(map, pac.tpos),
-		.turn = pac.dir,
 		.power = false,
 		.powerEnd = 0,
-		.frozen = true,
-		.frozenEnd = getTicksIn(3)
+		.frozen = false,
+		.frozenEnd = 0
 	};
+
 	while(1){
 		Ticks frameStart = getTicks();
 		clear();
@@ -153,7 +136,7 @@ int main(int argc, char const *argv[])
 		// drawTextCenteredCoord(pos, "DogeLib :3");
 		pac = movePac(pac, map);
 		drawMap(map);
-		drawPac(pac);
+		// drawPac(pac);
 		draw();
 		events(frameStart + TPF);
 	}
