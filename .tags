@@ -97,6 +97,7 @@ arr	Types.h	/^	Coord arr[2];$/;"	m	union:__anon7
 arr	Types.h	/^	float arr[2];$/;"	m	union:__anon12
 arr	Types.h	/^	int arr[2];$/;"	m	union:__anon2
 arr	main.c	/^	bool arr[4];$/;"	m	union:__anon28	file:
+atIntersection	main.c	/^bool atIntersection(const Pac pac)$/;"	f
 backColor	Text.h	/^	Color backColor;$/;"	m	struct:__anon26
 bezier	Graphics.h	/^void bezier(const Coord *pos, const uint numc, const uint nums)$/;"	f
 c1	Types.h	/^		Coord c1;$/;"	m	struct:__anon7::__anon8
@@ -121,6 +122,7 @@ coordInRect	Coords.h	/^bool coordInRect(const Coord coord, const Rect rect)$/;"	
 coordInv	Coords.h	/^Coord coordInv(const Coord coord)$/;"	f
 coordMax	Coords.h	/^int coordMax(const Coord coord)$/;"	f
 coordMin	Coords.h	/^int coordMin(const Coord coord)$/;"	f
+coordMod	Coords.h	/^Coord coordMod(const Coord coord, const int num)$/;"	f
 coordMul	Coords.h	/^Coord coordMul(const Coord coord, const int num)$/;"	f
 coordNz	Coords.h	/^bool coordNz(const Coord coord)$/;"	f
 coordOffset	Coords.h	/^Coord coordOffset(const Coord coord, const Offset off)$/;"	f
@@ -153,7 +155,7 @@ dirUD	Coords.h	/^Direction dirUD(const Direction dir)$/;"	f
 draw	Graphics.h	/^void draw(void)$/;"	f
 drawCircle	Graphics.h	/^void drawCircle(const uint x, const uint y, const uint radius)$/;"	f
 drawCircleCoord	Graphics.h	/^void drawCircleCoord(const Coord pos, const uint radius)$/;"	f
-drawDbg	main.c	/^void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys)$/;"	f
+drawDbg	main.c	/^void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys, const bool intersection)$/;"	f
 drawDot	Draw.h	/^void drawDot(const Map map, const Coord coord, const bool big)$/;"	f
 drawHLine	Graphics.h	/^void drawHLine(const uint x, const uint y, int len)$/;"	f
 drawImg	Image.h	/^void drawImg(Img *image)$/;"	f
@@ -202,7 +204,6 @@ getDirKeyStr	Input.h	/^const char* getDirKeyStr(const Direction dir)$/;"	f
 getInt	GetInt.h	/^int getInt(void)$/;"	f
 getMapLen	Map.h	/^Length getMapLen(File *mapFile)$/;"	f
 getMapLineLen	Map.h	/^uint getMapLineLen(File *mapFile)$/;"	f
-getPacWpos	main.c	/^Coord getPacWpos(const Pac pac)$/;"	f
 getR	GetInt.h	/^int getR(const int num)$/;"	f
 getSpawnCoord	Map.h	/^Coord getSpawnCoord(const Map map)$/;"	f
 getSpawnDir	Map.h	/^Direction getSpawnDir(const Map map, const Coord spawn)$/;"	f
@@ -260,6 +261,7 @@ pos	Input.h	/^	Coord pos;$/;"	m	struct:__anon19
 pos	Types.h	/^		Coord pos;$/;"	m	struct:__anon7::__anon11
 pos	Types.h	/^		float pos;$/;"	m	struct:__anon12::__anon15
 pos	Types.h	/^		int pos;$/;"	m	struct:__anon2::__anon6
+pos	main.c	/^	Coord pos;$/;"	m	struct:__anon27	file:
 power	main.c	/^	bool power;$/;"	m	struct:__anon27	file:
 powerEnd	main.c	/^	Ticks powerEnd;$/;"	m	struct:__anon27	file:
 prev	Input.h	/^	u8 prev[SDL_NUM_SCANCODES];$/;"	m	struct:__anon21
@@ -296,10 +298,9 @@ text	Text.h	/^	char* text;$/;"	m	struct:__anon26
 textColor	Text.h	/^	Color textColor;$/;"	m	struct:__anon26
 text_init	Text.h	/^void text_init(void)$/;"	f
 text_quit	Text.h	/^void text_quit(void)$/;"	f
-toff	main.c	/^	Coord toff;$/;"	m	struct:__anon27	file:
-tpos	main.c	/^	Coord tpos;$/;"	m	struct:__anon27	file:
+tileOffset	main.c	/^Coord tileOffset(const Pac pac)$/;"	f
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
-traversable	main.c	/^bool traversable(const char c)$/;"	f
+traversable	main.c	/^bool traversable(const Coord tpos, const Map map)$/;"	f
 u	main.c	/^		bool u;$/;"	m	struct:__anon28::__anon29	file:
 u16	Types.h	/^typedef uint16_t			u16;$/;"	t
 u32	Types.h	/^typedef uint32_t			u32;$/;"	t
@@ -309,10 +310,11 @@ uchar	Types.h	/^typedef unsigned char		uchar;$/;"	t
 uint	Types.h	/^typedef unsigned int		uint;$/;"	t
 ul	Types.h	/^typedef unsigned long		ul;$/;"	t
 ull	Types.h	/^typedef unsigned long long	ull;$/;"	t
-validAdjTiles	main.c	/^Bool4 validAdjTiles(const Pac pac, const Map map)$/;"	f
+validAdjDir	main.c	/^Bool4 validAdjDir(const Pac pac, const Map map)$/;"	f
 vec	Input.h	/^	Offset vec;$/;"	m	struct:__anon19
 warpable	main.c	/^	bool warpable;$/;"	m	struct:__anon27	file:
 window	Graphics.h	/^	SDL_Window* window;$/;"	m	struct:__anon18
+wposToTpos	main.c	/^Coord wposToTpos(const Pac pac)$/;"	f
 wrap	Coords.h	/^int wrap(const int n, const int min, const int max)$/;"	f
 x	3D.h	/^		int x;$/;"	m	struct:__anon23::__anon24
 x	Types.h	/^		Coord x;$/;"	m	struct:__anon7::__anon9

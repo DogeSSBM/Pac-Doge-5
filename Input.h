@@ -43,6 +43,6 @@ char getDirKeyChar(const Direction dir)
 
 const char* getDirKeyStr(const Direction dir)
 {
-	const char *dstr[4] = {"DIR_U", "DIR_R", "DIR_D", "DIR_L"};
+	const char *dstr[4] = {"U", "R", "D", "L"};
 	return dstr[dir];
 }

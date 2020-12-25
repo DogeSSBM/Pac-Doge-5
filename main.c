@@ -1,8 +1,7 @@
 #include "Includes.h"
 
 typedef struct{
-	Coord tpos;
-	Coord toff;
+	Coord pos;
 	uint scale;
 	Direction dir;
 	bool power;
@@ -36,7 +35,7 @@ bool dirKey(const Direction dir)
 		SDL_SCANCODE_DOWN,
 		SDL_SCANCODE_LEFT
 	};
-	return keyState(wasd[dir] || dpad[dir]);
+	return keyState(wasd[dir]) || keyState(dpad[dir]);
 }
 
 bool dirKeyEx(const Direction dir)
@@ -44,29 +43,46 @@ bool dirKeyEx(const Direction dir)
 	return dirKey(dir) && !dirKey(dirINV(dir));
 }
 
-Coord getPacWpos(const Pac pac)
+Coord wposToTpos(const Pac pac)
 {
-	return coordOffset(tposToWposm(pac.tpos, pac.scale),pac.toff);
+	return coordDiv(pac.pos, pac.scale);
 }
 
-bool traversable(const char c)
+bool traversable(const Coord tpos, const Map map)
 {
-	if(c == ' ' || c == '.' || c == 'o' || (c >= '0' && c <= '9'))
+	if(!inBound(tpos.x, 0, map.len.x) || !inBound(tpos.y, 0, map.len.y))
+		return false;
+	const char c = map.text[tpos.x][tpos.y];
+	if(c==' '||c=='.'||c=='o'||c=='f'||c=='F'||c=='P'||(c >= '0' && c <= '9'))
 		return true;
 	return false;
 }
 
-Bool4 validAdjTiles(const Pac pac, const Map map)
+Bool4 validAdjDir(const Pac pac, const Map map)
 {
+	char buf[] = " ";
 	Bool4 adjt = {0};
 	for(uint i = 0; i < 4; i++){
-		const Coord t = coordShift(pac.tpos, i, 1);
-		adjt.arr[i] =
-			inBound(t.x, 0, map.len.x) &&
-			inBound(t.y, 0, map.len.y) &&
-			traversable(map.text[t.x][t.y]);
+		const Coord t = coordShift(wposToTpos(pac), i, 1);
+		adjt.arr[i] = traversable(t, map);
+		setFontColor(adjt.arr[i]?GREEN:RED);
+		sprintf(buf, "%c", map.text[t.x][t.y]);
+		drawTextCenteredCoord(coordShift(pac.pos,i,map.scale*2), buf);
 	}
 	return adjt;
+}
+
+Coord tileOffset(const Pac pac)
+{
+	return coordMod(coordAdd(pac.pos, pac.scale/2), pac.scale);
+}
+
+bool atIntersection(const Pac pac)
+{
+	const Coord mod = tileOffset(pac);
+	if(mod.x==0 && mod.y==0)
+		return true;
+	return false;
 }
 
 Bool4 getDirExKeys(void)
@@ -77,34 +93,56 @@ Bool4 getDirExKeys(void)
 	return dirKeys;
 }
 
-void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys)
+void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys, const bool intersection)
 {
-	const Coord wpos = getPacWpos(pac);
 	setColor(WHITE);
-	fillCircleCoord(wpos, pac.scale/8);
+	fillCircleCoord(pac.pos, pac.scale/8);
 	for(uint i = 0; i < 4; i++){
-		setColor(validAdjT.arr[i]?GREEN:RED);
-		fillCircleCoord(coordShift(wpos, i, pac.scale/8), pac.scale/8);
+		setColor(validAdjT.arr[i]?(intersection?GREEN:BLUE):RED);
+		fillCircleCoord(coordShift(pac.pos, i, pac.scale/2), pac.scale/8);
 		setFontColor(dirKeys.arr[i]?GREEN:RED);
-		drawTextCenteredCoord(coordShift(wpos, i, pac.scale/4),getDirKeyStr(i));
+		drawTextCenteredCoord(coordShift(pac.pos, i, pac.scale),getDirKeyStr(i));
 	}
 }
 
 Pac movePac(Pac pac, const Map map)
 {
-	const Bool4 validAdjT = validAdjTiles(pac, map);
+	const Bool4 validDir = validAdjDir(pac, map);
 	const Bool4 dirKeys = getDirExKeys();
-	drawDbg(pac, validAdjT, dirKeys);
+	const bool intersection = atIntersection(pac);
+	const Coord mod = tileOffset(pac);
+	drawDbg(pac, validDir, dirKeys, atIntersection(pac));
+	const Direction oldDir = pac.dir;
+	if(dirKeys.arr[dirINV(pac.dir)] && validDir.arr[dirINV(pac.dir)])
+		pac.dir = dirINV(pac.dir);
+	if(intersection){
+		if(dirKeys.arr[dirROL(pac.dir)] && validDir.arr[dirROL(pac.dir)])
+			pac.dir = dirROL(pac.dir);
+		if(dirKeys.arr[dirROR(pac.dir)] && validDir.arr[dirROR(pac.dir)])
+			pac.dir = dirROR(pac.dir);
+	}
+	char buf[32] = {0};
+	// setFontColor(local?GREEN:RED);
+	setFontColor(WHITE);
+	sprintf(buf, "(% 3d,% 3d)", mod.x, mod.y);
+	drawTextCoord((Coord){16,16}, buf);
+
+	static bool fadv = false;
+	if(keyPressed(SDL_SCANCODE_P))
+		fadv = !fadv;
+	if(!fadv || keyPressed(SDL_SCANCODE_SPACE)){
+		if(validDir.arr[pac.dir] || (!intersection&&dirAXP(oldDir, pac.dir)))
+			pac.pos = coordShift(pac.pos, pac.dir, 1);
+	}
 	return pac;
 }
 
 void drawPac(const Pac pac)
 {
-	const Coord wpos = getPacWpos(pac);
 	setColor(YELLOW);
-	fillCircleCoord(wpos, pac.scale - pac.scale/4);
+	fillCircleCoord(pac.pos, pac.scale - pac.scale/4);
 	setColor(WHITE);
-	drawLineCoords(wpos, coordShift(wpos, pac.dir, pac.scale - pac.scale/4));
+	drawLineCoords(pac.pos, coordShift(pac.pos, pac.dir, pac.scale - pac.scale/4));
 }
 
 int main(int argc, char const *argv[])
@@ -116,10 +154,9 @@ int main(int argc, char const *argv[])
 	setFontSize(map.scale);
 
 	Pac pac = {
-		.tpos = getSpawnCoord(map),
-		.toff = {-map.scale/2, 0},
+		.pos = tposToWposm(getSpawnCoord(map), map.scale),
 		.scale = map.scale,
-		.dir = getSpawnDir(map, pac.tpos),
+		.dir = DIR_L,
 		.power = false,
 		.powerEnd = 0,
 		.frozen = false,
