@@ -290,6 +290,7 @@ setWindowSize	Graphics.h	/^void setWindowSize(const uint x, const uint y)$/;"	f
 shiftL	GetInt.h	/^int shiftL(int num, int digits)$/;"	f
 shiftR	GetInt.h	/^int shiftR(const int num)$/;"	f
 size	Text.h	/^	int size;$/;"	m	struct:__anon26
+sprite	main.c	/^	Img *sprite;$/;"	m	struct:__anon27	file:
 state	Input.h	/^		u32 state;$/;"	m	struct:__anon19::__anon20
 state	Input.h	/^	u32 state;$/;"	m	struct:__anon19
 strToInt	GetInt.h	/^int strToInt(const char *str)$/;"	f
@@ -298,7 +299,6 @@ text	Text.h	/^	char* text;$/;"	m	struct:__anon26
 textColor	Text.h	/^	Color textColor;$/;"	m	struct:__anon26
 text_init	Text.h	/^void text_init(void)$/;"	f
 text_quit	Text.h	/^void text_quit(void)$/;"	f
-tileOffset	main.c	/^Coord tileOffset(const Pac pac)$/;"	f
 tposToWposm	Map.h	/^Coord tposToWposm(const Coord tile, const uint scale)$/;"	f
 traversable	main.c	/^bool traversable(const Coord tpos, const Map map)$/;"	f
 u	main.c	/^		bool u;$/;"	m	struct:__anon28::__anon29	file:
