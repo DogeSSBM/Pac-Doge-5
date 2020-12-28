@@ -52,3 +52,11 @@ void drawMap(const Map map)
 		}
 	}
 }
+
+void drawPac(const Pac pac)
+{
+	setColor(YELLOW);
+	fillCircleCoord(pac.pos, pac.scale/2);
+	setColor(WHITE);
+	drawLineCoords(pac.pos, coordShift(pac.pos, pac.dir, pac.scale - pac.scale/4));
+}
