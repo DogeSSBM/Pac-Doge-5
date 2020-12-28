@@ -44,75 +44,61 @@ bool dirKeyEx(const Direction dir)
 	return dirKey(dir) && !dirKey(dirINV(dir));
 }
 
-Coord wposToTpos(const Pac pac)
+Coord wposToTpos(const Coord wpos, const uint scale)
 {
-	return coordDiv(pac.pos, pac.scale);
+	return coordDiv(wpos, scale);
 }
 
-bool traversable(const Coord tpos, const Map map)
+bool tileSolid(const Coord tpos, const Map map)
 {
 	if(!inBound(tpos.x, 0, map.len.x) || !inBound(tpos.y, 0, map.len.y))
-		return false;
+		return true;
 	const char c = map.text[tpos.x][tpos.y];
 	if(c=='#'||c=='W')
-		return false;
-	return true;
+		return true;
+	return false;
 }
 
-Bool4 validAdjDir(const Pac pac, const Map map)
+bool atIntersection(const Coord wpos, const uint scale)
 {
-	Bool4 adjt = {0};
-	for(uint i = 0; i < 4; i++)
-		adjt.arr[i] = traversable(coordShift(wposToTpos(pac), i, 1), map);
-	return adjt;
-}
-
-bool atIntersection(const Pac pac)
-{
-	const Coord mod = coordMod(coordAdd(pac.pos, pac.scale/2), pac.scale);
+	const Coord mod = coordMod(coordAdd(wpos, scale/2), scale);
 	if(mod.x==0 && mod.y==0)
 		return true;
 	return false;
 }
 
-Bool4 getDirExKeys(void)
+Pac shiftPac(Pac pac)
 {
-	Bool4 dirKeys = {0};
-	for(uint i = 0; i < 4; i++)
-		dirKeys.arr[i] = dirKeyEx(i);
-	return dirKeys;
-}
-
-void drawDbg(const Pac pac, const Bool4 validAdjT, const Bool4 dirKeys, const bool intersection)
-{
-	setColor(WHITE);
-	fillCircleCoord(pac.pos, pac.scale/8);
-	for(uint i = 0; i < 4; i++){
-		setColor(validAdjT.arr[i]?(intersection?GREEN:BLUE):RED);
-		fillCircleCoord(coordShift(pac.pos, i, pac.scale/2), pac.scale/8);
-		setFontColor(dirKeys.arr[i]?GREEN:RED);
-		drawTextCenteredCoord(coordShift(pac.pos, i, pac.scale),getDirKeyStr(i));
-	}
+	pac.pos = coordShift(pac.pos, pac.dir, 1);
+	return pac;
 }
 
 Pac movePac(Pac pac, const Map map)
 {
-	const Bool4 validDir = validAdjDir(pac, map);
-	const Bool4 dirKeys = getDirExKeys();
-	const bool intersection = atIntersection(pac);
-	const Direction oldDir = pac.dir;
-	if(dirKeys.arr[dirINV(pac.dir)] && validDir.arr[dirINV(pac.dir)])
+	if(dirKeyEx(dirINV(pac.dir))){
 		pac.dir = dirINV(pac.dir);
-	if(intersection){
-		if(dirKeys.arr[dirROL(pac.dir)] && validDir.arr[dirROL(pac.dir)])
-			pac.dir = dirROL(pac.dir);
-		if(dirKeys.arr[dirROR(pac.dir)] && validDir.arr[dirROR(pac.dir)])
-			pac.dir = dirROR(pac.dir);
+		return shiftPac(pac);
 	}
-
-	if(validDir.arr[pac.dir] || (!intersection&&dirAXP(oldDir,pac.dir)))
-		pac.pos = coordShift(pac.pos, pac.dir, 1);
-	return pac;
+	if(atIntersection(pac.pos, pac.scale)){
+		if(dirKeyEx(dirROR(pac.dir)) && !tileSolid(
+		coordShift(wposToTpos(pac.pos, pac.scale), dirROR(pac.dir), 1), map
+		)){
+			pac.dir = dirROR(pac.dir);
+			return shiftPac(pac);
+		}
+		if(dirKeyEx(dirROL(pac.dir)) && !tileSolid(
+		coordShift(wposToTpos(pac.pos, pac.scale), dirROL(pac.dir), 1), map
+		)){
+			pac.dir = dirROL(pac.dir);
+			return shiftPac(pac);
+		}
+		if(tileSolid(
+		coordShift(wposToTpos(pac.pos, pac.scale),pac.dir,1), map
+		)){
+			return pac;
+		}
+	}
+	return shiftPac(pac);
 }
 
 void drawPac(const Pac pac)
