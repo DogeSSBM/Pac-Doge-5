@@ -2,7 +2,8 @@
 
 int main(int argc, char const *argv[])
 {
-	Map map = readMap("Original", 20);
+	// Map map = readMap("Original", 20);
+	Map map = readMap("Test", 20);
 	printMap(map);
 	const Length window = coordMul(map.len, map.scale);
 	init(window);
