@@ -308,3 +308,12 @@ Offset offsetFlip(const Offset off)
 {
 	return (Offset){-off.x, -off.y};
 }
+
+static inline
+Coord coordPairMid(const CoordPair pair)
+{
+	return (Coord){
+		(pair.pos1.x+pair.pos2.x)/2,
+		(pair.pos1.y+pair.pos2.y)/2
+	};
+}

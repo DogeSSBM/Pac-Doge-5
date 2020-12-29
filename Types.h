@@ -40,6 +40,7 @@ typedef SDL_Event			Event;
 typedef SDL_Rect 			Rect;
 typedef SDL_Color 		Color;
 typedef SDL_Surface 		Img;
+typedef SDL_Texture		Sprite;
 typedef SDL_Keycode 		Key;
 typedef SDL_BlendMode		BlendMode;
 #define BLEND_NONE		SDL_BLENDMODE_NONE
@@ -80,6 +81,10 @@ typedef union{
 	struct{
 		Coord c1;
 		Coord c2;
+	};
+	struct{
+		Coord pos1;
+		Coord pos2;
 	};
 	struct{
 		Coord x;

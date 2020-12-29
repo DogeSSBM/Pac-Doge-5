@@ -54,3 +54,17 @@ void loadDrawImg(const char *imgFile)
 	SDL_DestroyTexture(t);
 	SDL_FreeSurface(img);
 }
+
+Sprite* spriteLoadScaleRotate(const char *spriteName)
+{
+	char spritePath[32] = {0};
+	sprintf(spritePath, "%s%s", "./Sprites/", spriteName);
+	if(access(spritePath, R_OK) != 0){
+		printf("Map file not found at %s\n", spritePath);
+		exit(0);
+	}
+	printf("Map file found at %s\n", spritePath);
+	return NULL;
+}
+
+// zoomSurface (SDL_Surface *src, double zoomx, double zoomy, int smooth)

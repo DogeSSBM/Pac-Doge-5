@@ -6,36 +6,36 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ABS	Types.h	36;"	d
 BLACK	Colors.h	/^const Color BLACK		= {0x00, 0x00, 0x00, 0xFF};$/;"	v
-BLEND_ADD	Types.h	47;"	d
-BLEND_ALPHA	Types.h	46;"	d
-BLEND_MOD	Types.h	48;"	d
-BLEND_NONE	Types.h	45;"	d
+BLEND_ADD	Types.h	48;"	d
+BLEND_ALPHA	Types.h	47;"	d
+BLEND_MOD	Types.h	49;"	d
+BLEND_NONE	Types.h	46;"	d
 BLUE	Colors.h	/^const Color BLUE 		= {0x00, 0x00, 0xFF, 0xFF};$/;"	v
 BORDERLESS	Types.h	/^	BORDERLESS	=		SDL_WINDOW_FULLSCREEN_DESKTOP,$/;"	e	enum:__anon7
 BlendMode	Types.h	/^typedef SDL_BlendMode		BlendMode;$/;"	t
 CYAN	Colors.h	/^const Color CYAN		= {0x00, 0xFF, 0xFF, 0xFF};$/;"	v
 Color	Types.h	/^typedef SDL_Color 		Color;$/;"	t
 Coord	Types.h	/^}Coord, Range, Length, Offset;$/;"	t	typeref:union:__anon8
-Coord3	3D.h	/^}Coord3;$/;"	t	typeref:union:__anon24
+Coord3	3D.h	/^}Coord3;$/;"	t	typeref:union:__anon25
 CoordPair	Types.h	/^}CoordPair, RangePair, LengthPair, OffsetPair;$/;"	t	typeref:union:__anon13
-Coordf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon18
+Coordf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon19
 D3Inv	3D.h	/^Direction3 D3Inv(const Direction3 d3)$/;"	f
-D3_B	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-D3_D	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-D3_F	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-D3_L	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-D3_R	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-D3_U	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon23
-DIM_X	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon26
-DIM_Y	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon26
-DIM_Z	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon26
-DIR_D	Types.h	/^	DIR_D = 0b10,$/;"	e	enum:__anon22
-DIR_L	Types.h	/^	DIR_L = 0b11$/;"	e	enum:__anon22
-DIR_R	Types.h	/^	DIR_R = 0b01,$/;"	e	enum:__anon22
-DIR_U	Types.h	/^	DIR_U = 0b00,$/;"	e	enum:__anon22
-Dimension	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	t	typeref:enum:__anon26
-Direction	Types.h	/^}Direction;$/;"	t	typeref:enum:__anon22
-Direction3	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	t	typeref:enum:__anon23
+D3_B	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+D3_D	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+D3_F	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+D3_L	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+D3_R	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+D3_U	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	e	enum:__anon24
+DIM_X	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon27
+DIM_Y	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon27
+DIM_Z	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	e	enum:__anon27
+DIR_D	Types.h	/^	DIR_D = 0b10,$/;"	e	enum:__anon23
+DIR_L	Types.h	/^	DIR_L = 0b11$/;"	e	enum:__anon23
+DIR_R	Types.h	/^	DIR_R = 0b01,$/;"	e	enum:__anon23
+DIR_U	Types.h	/^	DIR_U = 0b00,$/;"	e	enum:__anon23
+Dimension	3D.h	/^typedef enum{DIM_X, DIM_Y, DIM_Z}Dimension;$/;"	t	typeref:enum:__anon27
+Direction	Types.h	/^}Direction;$/;"	t	typeref:enum:__anon23
+Direction3	3D.h	/^typedef enum{D3_R, D3_L, D3_D, D3_U, D3_F, D3_B}Direction3;$/;"	t	typeref:enum:__anon24
 DirectionChar	Types.h	/^const char DirectionChar[4] = {'U', 'R', 'D', 'L'};$/;"	v
 Event	Types.h	/^typedef SDL_Event			Event;$/;"	t
 FPS	Timing.h	2;"	d
@@ -58,20 +58,21 @@ Img	Types.h	/^typedef SDL_Surface 		Img;$/;"	t
 Key	Types.h	/^typedef SDL_Keycode 		Key;$/;"	t
 Length	Types.h	/^}Coord, Range, Length, Offset;$/;"	t	typeref:union:__anon8
 LengthPair	Types.h	/^}CoordPair, RangePair, LengthPair, OffsetPair;$/;"	t	typeref:union:__anon13
-Lengthf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon18
+Lengthf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon19
 MAGENTA	Colors.h	/^const Color MAGENTA	= {0xFF, 0x00, 0xFF, 0xFF};$/;"	v
-Map	Map.h	/^}Map;$/;"	t	typeref:struct:__anon27
+Map	Map.h	/^}Map;$/;"	t	typeref:struct:__anon28
 Offset	Types.h	/^}Coord, Range, Length, Offset;$/;"	t	typeref:union:__anon8
 OffsetPair	Types.h	/^}CoordPair, RangePair, LengthPair, OffsetPair;$/;"	t	typeref:union:__anon13
-Offsetf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon18
-PI	Types.h	50;"	d
+Offsetf	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon19
+PI	Types.h	51;"	d
 PINK	Colors.h	/^const Color PINK		= {0xFF, 0xC0, 0xCB, 0xFF};$/;"	v
 Pac	Pac.h	/^}Pac;$/;"	t	typeref:struct:__anon5
 RED	Colors.h	/^const Color RED 		= {0xFF, 0x00, 0x00, 0xFF};$/;"	v
 Range	Types.h	/^}Coord, Range, Length, Offset;$/;"	t	typeref:union:__anon8
 RangePair	Types.h	/^}CoordPair, RangePair, LengthPair, OffsetPair;$/;"	t	typeref:union:__anon13
-Rangef	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon18
+Rangef	Types.h	/^}Coordf, Rangef, Lengthf, Offsetf;$/;"	t	typeref:union:__anon19
 Rect	Types.h	/^typedef SDL_Rect 			Rect;$/;"	t
+Sprite	Types.h	/^typedef SDL_Texture		Sprite;$/;"	t
 TB_create	Text.h	/^TextBox* TB_create(uint x, uint y, const char* text)$/;"	f
 TB_destroy	Text.h	/^void TB_destroy(TextBox *tb)$/;"	f
 TB_draw	Text.h	/^void TB_draw(TextBox *tb)$/;"	f
@@ -91,9 +92,9 @@ WINDOWED	Types.h	/^	WINDOWED	=		0$/;"	e	enum:__anon7
 WindowMode	Types.h	/^}WindowMode;$/;"	t	typeref:enum:__anon7
 YELLOW	Colors.h	/^const Color YELLOW	= {0xFF, 0xFF, 0x00, 0xFF};$/;"	v
 ZFLOOR	Types.h	37;"	d
-arr	3D.h	/^	int arr[3];$/;"	m	union:__anon24
+arr	3D.h	/^	int arr[3];$/;"	m	union:__anon25
 arr	Types.h	/^	Coord arr[2];$/;"	m	union:__anon13
-arr	Types.h	/^	float arr[2];$/;"	m	union:__anon18
+arr	Types.h	/^	float arr[2];$/;"	m	union:__anon19
 arr	Types.h	/^	int arr[2];$/;"	m	union:__anon8
 atIntersection	Pac.h	/^bool atIntersection(const Coord wpos, const uint scale)$/;"	f
 backColor	Text.h	/^	Color backColor;$/;"	m	struct:__anon6
@@ -103,7 +104,6 @@ c1	Types.h	/^		int c1;$/;"	m	struct:__anon8::__anon9
 c2	Types.h	/^		Coord c2;$/;"	m	struct:__anon13::__anon14
 c2	Types.h	/^		int c2;$/;"	m	struct:__anon8::__anon9
 charToInt	GetInt.h	/^int charToInt(const char c)$/;"	f
-checkDir	Map.h	/^bool checkDir(const Map map,const Coord coord,const Direction dir,const char c)$/;"	f
 clamp	Coords.h	/^int clamp(const int n, const int min, const int max)$/;"	f
 clear	Graphics.h	/^void clear(void)$/;"	f
 clearTerminal	DogeUtil.h	/^void clearTerminal(void)$/;"	f
@@ -125,6 +125,7 @@ coordMul	Coords.h	/^Coord coordMul(const Coord coord, const int num)$/;"	f
 coordNz	Coords.h	/^bool coordNz(const Coord coord)$/;"	f
 coordOffset	Coords.h	/^Coord coordOffset(const Coord coord, const Offset off)$/;"	f
 coordOffsetMul	Coords.h	/^Coord coordOffsetMul(const Coord coord1, const Coord coord2)$/;"	f
+coordPairMid	Coords.h	/^Coord coordPairMid(const CoordPair pair)$/;"	f
 coordPairToRect	Coords.h	/^Rect coordPairToRect(const Coord coord1, const Coord coord2)$/;"	f
 coordSame	Coords.h	/^bool coordSame(const Coord pos1, const Coord pos2)$/;"	f
 coordShift	Coords.h	/^Coord coordShift(const Coord coord, const Direction dir, const int units)$/;"	f
@@ -159,7 +160,7 @@ drawLine	Graphics.h	/^void drawLine(const uint x1, const uint y1, const uint x2,
 drawLineCoord3	3D.h	/^void drawLineCoord3(const Coord3 pos1, const Coord3 pos2, const Range win, const Offset zscale)$/;"	f
 drawLineCoords	Graphics.h	/^void drawLineCoords(const Coord pos1, const Coord pos2)$/;"	f
 drawMap	Draw.h	/^void drawMap(const Map map)$/;"	f
-drawPac	Draw.h	/^void drawPac(const Pac pac)$/;"	f
+drawPac	Draw.h	/^void drawPac(const Pac pac, const Map map)$/;"	f
 drawPixel	Graphics.h	/^void drawPixel(const uint x, const uint y)$/;"	f
 drawPixelCoord	Graphics.h	/^void drawPixelCoord(const Coord pos)$/;"	f
 drawPoly	Graphics.h	/^void drawPoly(Coord *pos, const uint num)$/;"	f
@@ -193,15 +194,17 @@ fontSize	Graphics.h	/^	int fontSize;$/;"	m	struct:__anon4
 freeImg	Image.h	/^void freeImg(Img *image)$/;"	f
 frozen	Pac.h	/^	bool frozen;$/;"	m	struct:__anon5
 frozenEnd	Pac.h	/^	Ticks frozenEnd;$/;"	m	struct:__anon5
+fruitpos	Map.h	/^	Coord fruitpos;$/;"	m	struct:__anon28
 getColor	Graphics.h	/^Color getColor(void)$/;"	f
 getDirKeyChar	Input.h	/^char getDirKeyChar(const Direction dir)$/;"	f
 getDirKeyStr	Input.h	/^const char* getDirKeyStr(const Direction dir)$/;"	f
+getFruitSpawn	Map.h	/^Coord getFruitSpawn(const Map map)$/;"	f
 getInt	GetInt.h	/^int getInt(void)$/;"	f
 getMapLen	Map.h	/^Length getMapLen(File *mapFile)$/;"	f
 getMapLineLen	Map.h	/^uint getMapLineLen(File *mapFile)$/;"	f
 getR	GetInt.h	/^int getR(const int num)$/;"	f
 getSpawnCoord	Map.h	/^Coord getSpawnCoord(const Map map)$/;"	f
-getSpawnDir	Map.h	/^Direction getSpawnDir(const Map map, const Coord spawn)$/;"	f
+getSpawnDir	Map.h	/^Direction getSpawnDir(const Map map)$/;"	f
 getTicks	Timing.h	/^Ticks getTicks(void)$/;"	f
 getTicksIn	Timing.h	/^Ticks getTicksIn(const uint sec)$/;"	f
 gfx	Graphics.h	/^}gfx = {};$/;"	v	typeref:struct:__anon4
@@ -230,32 +233,35 @@ keyPressed	Input.h	/^bool keyPressed(const SDL_Scancode key)$/;"	f
 keyReleased	Input.h	/^bool keyReleased(const SDL_Scancode key)$/;"	f
 keyState	Input.h	/^bool keyState(const SDL_Scancode key)$/;"	f
 keys	Input.h	/^}keys = {0};$/;"	v	typeref:struct:__anon3
-len	Map.h	/^	Length len;$/;"	m	struct:__anon27
+len	Map.h	/^	Length len;$/;"	m	struct:__anon28
 lint	Types.h	/^typedef long int			lint;$/;"	t
 loadDrawImg	Image.h	/^void loadDrawImg(const char *imgFile)$/;"	f
 loadImg	Image.h	/^Img* loadImg(const char *imgFile)$/;"	f
 main	main.c	/^int main(int argc, char const *argv[])$/;"	f
-max	Types.h	/^		Coord max;$/;"	m	struct:__anon13::__anon16
-max	Types.h	/^		float max;$/;"	m	struct:__anon18::__anon20
+max	Types.h	/^		Coord max;$/;"	m	struct:__anon13::__anon17
+max	Types.h	/^		float max;$/;"	m	struct:__anon19::__anon21
 max	Types.h	/^		int max;$/;"	m	struct:__anon8::__anon11
-min	Types.h	/^		Coord min;$/;"	m	struct:__anon13::__anon16
-min	Types.h	/^		float min;$/;"	m	struct:__anon18::__anon20
+min	Types.h	/^		Coord min;$/;"	m	struct:__anon13::__anon17
+min	Types.h	/^		float min;$/;"	m	struct:__anon19::__anon21
 min	Types.h	/^		int min;$/;"	m	struct:__anon8::__anon11
 mouse	Input.h	/^}mouse = {0};$/;"	v	typeref:struct:__anon1
 movePac	Pac.h	/^Pac movePac(Pac pac, const Map map)$/;"	f
-neg	Types.h	/^		Coord neg;$/;"	m	struct:__anon13::__anon17
-neg	Types.h	/^		float neg;$/;"	m	struct:__anon18::__anon21
+neg	Types.h	/^		Coord neg;$/;"	m	struct:__anon13::__anon18
+neg	Types.h	/^		float neg;$/;"	m	struct:__anon19::__anon22
 neg	Types.h	/^		int neg;$/;"	m	struct:__anon8::__anon12
 offsetFlip	Coords.h	/^Offset offsetFlip(const Offset off)$/;"	f
 offsetRol	Coords.h	/^Offset offsetRol(const Offset off)$/;"	f
 offsetRor	Coords.h	/^Offset offsetRor(const Offset off)$/;"	f
+pacInit	Pac.h	/^Pac pacInit(const Map map)$/;"	f
 parseMap	Map.h	/^char** parseMap(File *mapFile, const Length len)$/;"	f
 pos	Input.h	/^		Coord pos;$/;"	m	struct:__anon1::__anon2
 pos	Input.h	/^	Coord pos;$/;"	m	struct:__anon1
 pos	Pac.h	/^	Coord pos;$/;"	m	struct:__anon5
-pos	Types.h	/^		Coord pos;$/;"	m	struct:__anon13::__anon17
-pos	Types.h	/^		float pos;$/;"	m	struct:__anon18::__anon21
+pos	Types.h	/^		Coord pos;$/;"	m	struct:__anon13::__anon18
+pos	Types.h	/^		float pos;$/;"	m	struct:__anon19::__anon22
 pos	Types.h	/^		int pos;$/;"	m	struct:__anon8::__anon12
+pos1	Types.h	/^		Coord pos1;$/;"	m	struct:__anon13::__anon15
+pos2	Types.h	/^		Coord pos2;$/;"	m	struct:__anon13::__anon15
 power	Pac.h	/^	bool power;$/;"	m	struct:__anon5
 powerEnd	Pac.h	/^	Ticks powerEnd;$/;"	m	struct:__anon5
 prev	Input.h	/^	u8 prev[SDL_NUM_SCANCODES];$/;"	m	struct:__anon3
@@ -263,13 +269,13 @@ prev	Input.h	/^	}prev;$/;"	m	struct:__anon1	typeref:struct:__anon1::__anon2
 printMap	Map.h	/^void printMap(const Map map)$/;"	f
 r	Text.h	/^	Rect r;$/;"	m	struct:__anon6
 randRange	DogeUtil.h	/^float randRange(float a, float b)$/;"	f
-readMap	Map.h	/^Map readMap(const char *mapName)$/;"	f
+readMap	Map.h	/^Map readMap(const char *mapName, const uint scale)$/;"	f
 rectToCoordPair	Coords.h	/^CoordPair rectToCoordPair(const Rect rect)$/;"	f
 renderer	Graphics.h	/^	SDL_Renderer* renderer;$/;"	m	struct:__anon4
 rgbToColor	Colors.h	/^Color rgbToColor(const uint R, const uint G, const uint B)$/;"	f
 rgbaToColor	Colors.h	/^Color rgbaToColor(const uint R, const uint G, const uint B, const uint A)$/;"	f
 saveScreenshot	Graphics.h	/^void saveScreenshot(const char* file_name)$/;"	f
-scale	Map.h	/^	uint scale;$/;"	m	struct:__anon27
+scale	Map.h	/^	uint scale;$/;"	m	struct:__anon28
 scale	Pac.h	/^	uint scale;$/;"	m	struct:__anon5
 secToTicks	Timing.h	/^Ticks secToTicks(const uint sec)$/;"	f
 setBlend	Graphics.h	/^void setBlend(const BlendMode mode)$/;"	f
@@ -284,11 +290,14 @@ shiftL	GetInt.h	/^int shiftL(int num, int digits)$/;"	f
 shiftPac	Pac.h	/^Pac shiftPac(Pac pac)$/;"	f
 shiftR	GetInt.h	/^int shiftR(const int num)$/;"	f
 size	Text.h	/^	int size;$/;"	m	struct:__anon6
-sprite	Pac.h	/^	Img *sprite;$/;"	m	struct:__anon5
+spawn	Map.h	/^	Coord spawn;$/;"	m	struct:__anon28
+spawnDir	Map.h	/^	Direction spawnDir;$/;"	m	struct:__anon28
+sprite	Pac.h	/^	Sprite *sprite[4];$/;"	m	struct:__anon5
+spriteLoadScaleRotate	Image.h	/^Sprite* spriteLoadScaleRotate(const char *spriteName)$/;"	f
 state	Input.h	/^		u32 state;$/;"	m	struct:__anon1::__anon2
 state	Input.h	/^	u32 state;$/;"	m	struct:__anon1
 strToInt	GetInt.h	/^int strToInt(const char *str)$/;"	f
-text	Map.h	/^	char **text;$/;"	m	struct:__anon27
+text	Map.h	/^	char **text;$/;"	m	struct:__anon28
 text	Text.h	/^	char* text;$/;"	m	struct:__anon6
 textColor	Text.h	/^	Color textColor;$/;"	m	struct:__anon6
 text_init	Text.h	/^void text_init(void)$/;"	f
@@ -308,14 +317,14 @@ warpable	Pac.h	/^	bool warpable;$/;"	m	struct:__anon5
 window	Graphics.h	/^	SDL_Window* window;$/;"	m	struct:__anon4
 wposToTpos	Pac.h	/^Coord wposToTpos(const Coord wpos, const uint scale)$/;"	f
 wrap	Coords.h	/^int wrap(const int n, const int min, const int max)$/;"	f
-x	3D.h	/^		int x;$/;"	m	struct:__anon24::__anon25
-x	Types.h	/^		Coord x;$/;"	m	struct:__anon13::__anon15
-x	Types.h	/^		float x;$/;"	m	struct:__anon18::__anon19
+x	3D.h	/^		int x;$/;"	m	struct:__anon25::__anon26
+x	Types.h	/^		Coord x;$/;"	m	struct:__anon13::__anon16
+x	Types.h	/^		float x;$/;"	m	struct:__anon19::__anon20
 x	Types.h	/^		int x;$/;"	m	struct:__anon8::__anon10
 xlen	Graphics.h	/^	uint xlen, ylen;$/;"	m	struct:__anon4
-y	3D.h	/^		int y;$/;"	m	struct:__anon24::__anon25
-y	Types.h	/^		Coord y;$/;"	m	struct:__anon13::__anon15
-y	Types.h	/^		float y;$/;"	m	struct:__anon18::__anon19
+y	3D.h	/^		int y;$/;"	m	struct:__anon25::__anon26
+y	Types.h	/^		Coord y;$/;"	m	struct:__anon13::__anon16
+y	Types.h	/^		float y;$/;"	m	struct:__anon19::__anon20
 y	Types.h	/^		int y;$/;"	m	struct:__anon8::__anon10
 ylen	Graphics.h	/^	uint xlen, ylen;$/;"	m	struct:__anon4
-z	3D.h	/^		int z;$/;"	m	struct:__anon24::__anon25
+z	3D.h	/^		int z;$/;"	m	struct:__anon25::__anon26

@@ -3,7 +3,7 @@
 typedef struct{
 	Coord pos;
 	uint scale;
-	Img *sprite;
+	Sprite *sprite[4];
 	Direction dir;
 	bool power;
 	Ticks powerEnd;
@@ -65,6 +65,11 @@ Pac shiftPac(Pac pac)
 
 Pac movePac(Pac pac, const Map map)
 {
+	if(pac.frozen){
+		if(pac.frozenEnd > getTicks())
+			return pac;
+		pac.frozen = false;
+	}
 	if(dirKeyEx(dirINV(pac.dir))){
 		pac.dir = dirINV(pac.dir);
 		return shiftPac(pac);
@@ -89,4 +94,17 @@ Pac movePac(Pac pac, const Map map)
 		}
 	}
 	return shiftPac(pac);
+}
+
+Pac pacInit(const Map map)
+{
+	return (Pac){
+		.pos = tposToWposm(getSpawnCoord(map), map.scale),
+		.scale = map.scale,
+		.dir = map.spawnDir,
+		.power = false,
+		.powerEnd = 0,
+		.frozen = true,
+		.frozenEnd = getTicksIn(4)
+	};
 }

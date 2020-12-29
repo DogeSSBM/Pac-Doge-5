@@ -4,6 +4,9 @@ typedef struct{
 	Length len;
 	uint scale;
 	char **text;
+	Coord spawn;
+	Direction spawnDir;
+	Coord fruitpos;
 }Map;
 
 bool inMap(const Coord coord, const Length len)
@@ -19,13 +22,44 @@ Coord tposToWposm(const Coord tile, const uint scale)
 	return coordAdd(coordMul(tile, scale), scale/2);
 }
 
-bool checkDir(const Map map,const Coord coord,const Direction dir,const char c)
+Coord getFruitSpawn(const Map map)
 {
-	const RangePair bound={(Range){0, map.len.x},(Range){0, map.len.y}};
-	const Coord adj = coordShift(coord, dir, 1);
-	if(!coordInRangePair(adj, bound))
-		return false;
-	return map.text[adj.x][adj.y] == c;
+	bool found = false;
+	CoordPair pair = {(Coord){0,0}, (Coord){0,0}};
+	for(uint y = 0; y < map.len.y; y++){
+		for(uint x = 0; x < map.len.x; x++){
+			const Coord coord = (Coord){x, y};
+			if(map.text[x][y] == 'F'){
+				if(found){
+					if(!coordSame(coord, pair.pos1) &&
+					!coordSame(coord, pair.pos2)){
+						printf("Incorrect F found at: (%2u,%2u)\n",
+						x, y);
+						exit(0);
+					}
+				}else{
+					pair.pos1.x = x;
+					pair.pos1.y = y;
+					for(uint i = 0; i < 4; i++){
+						const Coord adj = coordShift(coord,i,1);
+						if(inMap(adj,map.len) &&
+						map.text[adj.x][adj.y]=='F'){
+							pair.pos2 = adj;
+							found = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	if(!found){
+		printf("Could not find Fruit\n");
+		exit(0);
+	}
+	pair.pos1 = tposToWposm(pair.pos1, map.scale);
+	pair.pos2 = tposToWposm(pair.pos2, map.scale);
+	return coordPairMid(pair);
 }
 
 Coord getSpawnCoord(const Map map)
@@ -54,10 +88,11 @@ Coord getSpawnCoord(const Map map)
 	return ret;
 }
 
-Direction getSpawnDir(const Map map, const Coord spawn)
+Direction getSpawnDir(const Map map)
 {
 	for(Direction dir = DIR_U; dir <= DIR_L; dir++){
-		if(checkDir(map, spawn, dir, 'f'))
+		const Coord adj = coordShift(map.spawn, dir, 1);
+		if(inMap(adj, map.len) && map.text[adj.x][adj.y] == 'f')
 			return dir;
 	}
 	printf("Spawn must have an adjacent 'f'\n");
@@ -160,7 +195,7 @@ char** parseMap(File *mapFile, const Length len)
 	return text;
 }
 
-Map readMap(const char *mapName)
+Map readMap(const char *mapName, const uint scale)
 {
 	char mapPath[32] = {0};
 	sprintf(mapPath, "%s%s", "./Maps/", mapName);
@@ -172,8 +207,11 @@ Map readMap(const char *mapName)
 	File *mapFile = fopen(mapPath, "r");
 	Map map = {
 		.len = getMapLen(mapFile),
-		.scale = 32,
+		.scale = scale,
 		.text = parseMap(mapFile, map.len)
 	};
+	map.spawn = getSpawnCoord(map);
+	map.spawnDir = getSpawnDir(map);
+	map.fruitpos = getFruitSpawn(map);
 	return map;
 }
